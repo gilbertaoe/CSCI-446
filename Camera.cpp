@@ -2,7 +2,7 @@
 
 Camera::Camera(void)
 {
-	xpos = 0;	ypos = 0;	zpos = 0;	xrot = 0;	yrot = 0;	angle=0.0;
+	xpos = 0;	ypos = 0;	zpos = 0;	xrot = 0;	yrot = 0;	angle=0.0; cRadius = 10.0f;
 }
 
 void Camera::position()

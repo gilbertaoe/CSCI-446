@@ -6,10 +6,11 @@ class Camera
 public:
 	Camera();
 	void position();
-private:
+
 	//angle of rotation
-	float xpos, ypos, zpos, xrot, yrot, angle;
-	float lastx, lasty;	
+	float xpos, ypos, zpos, xrot, yrot, zrot, angle;
+	float lastx, lasty;
+	float cRadius; // our radius distance from our character
 };
 
 #endif
