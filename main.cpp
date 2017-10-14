@@ -3,21 +3,22 @@
 #include <GL/freeglut.h>
 #include <math.h>
 #include "Cow.h"
-#include "Camera.cpp"
 #include "Environment.h"
 #include "Chicken.h"
 #include "UFO.h"
 
 using namespace std;
 
-Camera *cam = new Camera;
+float xpos, ypos, zpos, xrot, yrot, zrot, angle;
+float lastx, lasty;
+float cRadius; // our radius distance from our character
 
 void myDisplay() 
 {
    glClearColor (0.0,0.0,0.0, 1.0); //clear the screen to black
    glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //clear the color buffer and the depth buffer
    glLoadIdentity(); 
-   //cam->position();
+   //position();
    glEnable (GL_DEPTH_TEST); //enable the depth testing
    //glEnable (GL_LIGHTING); //enable the lighting
    //glEnable (GL_LIGHT0); //enable LIGHT0, our Diffuse Light
@@ -27,19 +28,15 @@ void myDisplay()
 
 
 
-   glTranslatef(0.0f, 0.0f, -cam->cRadius);
-   glRotatef(cam->xrot,1.0,0.0,0.0);
+   glTranslatef(0.0f, 0.0f, -cRadius);
+   glRotatef(xrot,1.0,0.0,0.0);
    glColor3f(1.0f, 0.0f, 0.0f);
    glutSolidCube(2); //Our character to follow
 
-   glRotatef(cam->yrot,0.0,1.0,0.0);  //rotate our camera on the y-axis (up and down)
-   glTranslated(-cam->xpos,0.0f,-cam->zpos); //translate the screen to the position of our camera
+   glRotatef(yrot,0.0,1.0,0.0);  //rotate our camera on the y-axis (up and down)
+   glTranslated(-xpos,0.0f,-zpos); //translate the screen to the position of our camera
    glColor3f(1.0f, 1.0f, 1.0f);
    //cube(); //call the cube drawing function
-
-   glPushMatrix();
-   glutSolidCube(1); //draw the cube
-   glPopMatrix();
 
    glColor3f(0.0f, 1.0f, 0.0f);
    glBegin(GL_QUADS);
@@ -173,7 +170,7 @@ void myDisplay()
 
    glutSwapBuffers(); //swap the buffers
 
-   cam->angle++;
+   angle++;
 }
 
 void myInit(void)
@@ -185,50 +182,50 @@ void keyboard (unsigned char key, int x, int y)
 {
     if (key=='q')
     {
-      cam->xrot += 1;
-      if (cam->xrot >360) cam->xrot -= 360;
+      xrot += 1;
+      if (xrot >360) xrot -= 360;
     }
 
     if (key=='z')
     {
-      cam->xrot -= 1;
-      if (cam->xrot < -360) cam->xrot += 360;
+      xrot -= 1;
+      if (xrot < -360) xrot += 360;
     }
 
     if (key=='w')
     {
       float xrotrad, yrotrad;
-      yrotrad = (cam->yrot / 180 * 3.141592654f);
-      xrotrad = (cam->xrot / 180 * 3.141592654f);
-      cam->xpos += float(sin(yrotrad));
-      cam->zpos -= float(cos(yrotrad));
-      cam->ypos -= float(sin(xrotrad));
+      yrotrad = (yrot / 180 * 3.141592654f);
+      xrotrad = (xrot / 180 * 3.141592654f);
+      xpos += float(sin(yrotrad));
+      zpos -= float(cos(yrotrad));
+      ypos -= float(sin(xrotrad));
     }
 
     if (key=='s')
     {
       float xrotrad, yrotrad;
-      yrotrad = (cam->yrot / 180 * 3.141592654f);
-      xrotrad = (cam->xrot / 180 * 3.141592654f);
-      cam->xpos -= float(sin(yrotrad));
-      cam->zpos += float(cos(yrotrad));
-      cam->ypos += float(sin(xrotrad));
+      yrotrad = (yrot / 180 * 3.141592654f);
+      xrotrad = (xrot / 180 * 3.141592654f);
+      xpos -= float(sin(yrotrad));
+      zpos += float(cos(yrotrad));
+      ypos += float(sin(xrotrad));
     }
 
     if (key=='d')
     {
       float yrotrad;
-      yrotrad = (cam->yrot / 180 * 3.141592654f);
-      cam->xpos += float(cos(yrotrad)) * 0.2;
-      cam->zpos += float(sin(yrotrad)) * 0.2;
+      yrotrad = (yrot / 180 * 3.141592654f);
+      xpos += float(cos(yrotrad)) * 0.2;
+      zpos += float(sin(yrotrad)) * 0.2;
     }
 
     if (key=='a')
     {
       float yrotrad;
-      yrotrad = (cam->yrot / 180 * 3.141592654f);
-      cam->xpos -= float(cos(yrotrad)) * 0.2;
-      cam->zpos -= float(sin(yrotrad)) * 0.2;
+      yrotrad = (yrot / 180 * 3.141592654f);
+      xpos -= float(cos(yrotrad)) * 0.2;
+      zpos -= float(sin(yrotrad)) * 0.2;
     }
 
     if (key==27)
@@ -239,12 +236,12 @@ void keyboard (unsigned char key, int x, int y)
 
 void mouseMovement(int x, int y)
 {
-    int diffx=x-cam->lastx; //check the difference between the current x and the last x position
-    int diffy=y-cam->lasty; //check the difference between the current y and the last y position
-    cam->lastx=x; //set lastx to the current x position
-    cam->lasty=y; //set lasty to the current y position
-    cam->xrot += (float) diffy; //set the xrot to xrot with the addition of the difference in the y position
-    cam->yrot += (float) diffx;    //set the xrot to yrot with the addition of the difference in the x position
+    int diffx=x-lastx; //check the difference between the current x and the last x position
+    int diffy=y-lasty; //check the difference between the current y and the last y position
+    lastx=x; //set lastx to the current x position
+    lasty=y; //set lasty to the current y position
+    xrot += (float) diffy; //set the xrot to xrot with the addition of the difference in the y position
+    yrot += (float) diffx;    //set the xrot to yrot with the addition of the difference in the x position
 }
 
 void myReshape (int w, int h)
@@ -267,6 +264,7 @@ int main(int argc, char **argv)
    glutIdleFunc (myDisplay);
    glutReshapeFunc (myReshape);
    glutPassiveMotionFunc(mouseMovement); //check for mouse movement
+   xpos = 0; ypos = 0; zpos = 0; xrot = 0; yrot = 0; angle=0.0; cRadius = 10.0f;
 
    glutKeyboardFunc (keyboard);
 
