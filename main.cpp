@@ -2,6 +2,7 @@
 #include <GL/glu.h>
 #include <GL/freeglut.h>
 #include <math.h>
+#include <iostream>
 #include "Cow.h"
 #include "Environment.h"
 #include "Chicken.h"
@@ -244,6 +245,11 @@ void myDisplay()
    glRotatef(xrot,1.0,0.0,0.0);
    glColor3f(1.0f, 0.0f, 0.0f);
    glutSolidCube(2); //Our character to follow
+   glColor3f(0.0f, 0.0f, 1.0f);
+   glBegin(GL_LINES);
+      glVertex3f(0.0f, 0.0f, 0.0f);
+      glVertex3f(0.0f, 2.5f, 0.0f);
+   glEnd();
 
    glRotatef(yrot,0.0,1.0,0.0);  //rotate our camera on the y-axis (up and down)
    glTranslated(-xpos,0.0f,-zpos); //translate the screen to the position of our camera
@@ -253,9 +259,9 @@ void myDisplay()
    glColor3f(0.0f, 1.0f, 0.0f);
    glBegin(GL_QUADS);
       glVertex3f(0.0f, 0.0f, 0.0f);
-      glVertex3f(0.0f, 0.0f, 55.0f);
-      glVertex3f(55.0f, 0.0f, 55.0f);
-      glVertex3f(55.f, 0.0f, 0.0f);
+      glVertex3f(0.0f, 0.0f, 52.0f);
+      glVertex3f(52.0f, 0.0f, 52.0f);
+      glVertex3f(52.f, 0.0f, 0.0f);
    glEnd();
 
    drawPost();
@@ -454,6 +460,11 @@ void keyboard (unsigned char key, int x, int y)
       yrotrad = (yrot / 180 * 3.141592654f);
       xpos -= float(cos(yrotrad)) * 0.2;
       zpos -= float(sin(yrotrad)) * 0.2;
+    }
+
+    if (key=='p')
+    {
+      cout << "XPOS: " << xpos << " YPOS: " << ypos << " ZPOS: " << zpos << endl;
     }
 
     if (key==27)
