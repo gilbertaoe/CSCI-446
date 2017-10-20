@@ -13,6 +13,7 @@ using namespace std;
 float xpos, ypos, zpos, xrot, yrot, zrot, angle;
 float lastx, lasty;
 float cRadius; // our radius distance from our character
+int rotating = 0;
 
 void drawPost() 
 {
@@ -226,6 +227,131 @@ void drawPost()
    }
 }
 
+void drawFarm()
+{
+  glLineWidth(2);
+  glColor3f(0.0f, 0.0f, 0.0f);
+  glBegin(GL_LINES);
+    glVertex3f(48.0f, 0.11f, 48.0f);
+    glVertex3f(48.0f, 0.11f, 30.0f);
+
+    glVertex3f(48.0f, 0.11f, 30.0f);
+    glVertex3f(35.0f, 0.11f, 30.0f);
+
+    glVertex3f(35.0f, 0.11f, 48.0f);
+    glVertex3f(35.0f, 0.11f, 30.0f);
+
+    glVertex3f(48.0f, 0.11f, 48.0f);
+    glVertex3f(35.0f, 0.11f, 48.0f);
+  glEnd();
+  glLineWidth(1);
+
+  glColor3f(0.80f, 0.0f, 0.0f);
+  glBegin(GL_QUADS);
+    glVertex3f(48.0f, 0.1f, 30.0f);
+    glVertex3f(35.0f, 0.1f, 30.0f);
+    glVertex3f(35.0f, 0.1f, 48.0f);
+    glVertex3f(48.0f, 0.1f, 48.0f);
+  glEnd();
+
+  glBegin(GL_QUADS);
+    glVertex3f(48.0f, 0.1f, 30.0f);
+    glVertex3f(48.0f, 0.1f, 48.0f);
+    glVertex3f(48.0f, 5.0f, 48.0f);
+    glVertex3f(48.0f, 5.0f, 30.0f);
+  glEnd();
+
+  glBegin(GL_QUADS);
+    glVertex3f(48.0f, 0.1f, 30.0f);
+    glVertex3f(35.0f, 0.1f, 30.0f);
+    glVertex3f(35.0f, 5.0f, 30.0f);
+    glVertex3f(48.0f, 5.0f, 30.0f);
+  glEnd();
+
+  glBegin(GL_QUADS);
+    glVertex3f(48.0f, 0.1f, 48.0f);
+    glVertex3f(35.0f, 0.1f, 48.0f);
+    glVertex3f(35.0f, 5.0f, 48.0f);
+    glVertex3f(48.0f, 5.0f, 48.0f);
+  glEnd();
+
+  glColor3f(0.80f, 1.0f, 0.0f);
+  glBegin(GL_QUADS);
+    glVertex3f(48.0f, 5.0f, 48.0f);
+    glVertex3f(42.0f, 9.0f, 48.0f);
+    glVertex3f(42.0f, 9.0f, 30.0f);
+    glVertex3f(48.0f, 5.0f, 30.0f);
+  glEnd();
+
+  glBegin(GL_QUADS);
+    glVertex3f(35.0f, 5.0f, 48.0f);
+    glVertex3f(42.0f, 9.0f, 48.0f);
+    glVertex3f(42.0f, 9.0f, 30.0f);
+    glVertex3f(35.0f, 5.0f, 30.0f);
+  glEnd();
+
+  glColor3f(0.80f, 1.0f, 1.0f);
+  glBegin(GL_TRIANGLES);
+    glVertex3f(35.0f, 5.0f, 30.0f);
+    glVertex3f(42.0f, 9.0f, 30.0f);
+    glVertex3f(48.0f, 5.0f, 30.0f);
+  glEnd();
+
+  glBegin(GL_TRIANGLES);
+    glVertex3f(35.0f, 5.0f, 48.0f);
+    glVertex3f(42.0f, 9.0f, 48.0f);
+    glVertex3f(48.0f, 5.0f, 48.0f);
+  glEnd();
+
+  glColor3f(0.80f, 0.0f, 1.0f);
+  glBegin(GL_QUADS);
+    glVertex3f(35.0f, 5.0f, 48.0f);
+    glVertex3f(35.0f, 0.1f, 48.0f);
+    glVertex3f(35.0f, 0.1f, 35.0f);
+    glVertex3f(35.0f, 5.0f, 35.0f);
+  glEnd();
+
+  glBegin(GL_QUADS);
+    glVertex3f(35.0f, 5.0f, 35.0f);
+    glVertex3f(35.0f, 0.1f, 35.0f);
+    glVertex3f(35.0f, 0.1f, 30.0f);
+    glVertex3f(35.0f, 5.0f, 30.0f);
+  glEnd();
+
+  glColor3f(0.0f, 0.0f, 0.0f);
+  glBegin(GL_LINES);
+    glVertex3f(34.9f, 5.0f, 48.0f);
+    glVertex3f(34.9f, 0.1f, 39.0f);
+
+    glVertex3f(34.9f, 5.0f, 39.0f);
+    glVertex3f(34.9f, 0.1f, 48.0f);
+  glEnd();
+
+  glBegin(GL_LINES);
+    glVertex3f(34.9f, 5.0f, 39.0f);
+    glVertex3f(34.9f, 0.1f, 30.0f);
+
+    glVertex3f(34.9f, 5.0f, 30.0f);
+    glVertex3f(34.9f, 0.1f, 39.0f);
+  glEnd();
+
+  glBegin(GL_LINES);
+    glVertex3f(34.9f, 5.0f, 39.0f);
+    glVertex3f(34.9f, 0.1f, 39.0f);
+  glEnd();
+}
+
+void drawTrough()
+{
+  glColor3f(0.0f, 0.0f, 0.0f);
+  glBegin(GL_QUADS);
+    glVertex3f(35.0f, 5.0f, 35.0f);
+    glVertex3f(35.0f, 0.1f, 35.0f);
+    glVertex3f(35.0f, 0.1f, 30.0f);
+    glVertex3f(35.0f, 5.0f, 30.0f);
+  glEnd();
+}
+
 void myDisplay() 
 {
    glClearColor (0.0,0.0,0.0, 1.0); //clear the screen to black
@@ -256,6 +382,14 @@ void myDisplay()
    glColor3f(1.0f, 1.0f, 1.0f);
    //cube(); //call the cube drawing function
 
+   glColor3f(1.0f, 1.0f, 1.0f);
+   glBegin(GL_QUADS);
+      glVertex2f(0.0f, 0.0f);
+      glVertex2f(0.0f, 15.0f);
+      glVertex2f(15.0f, 15.0f);
+      glVertex2f(0.0f, 15.0f);
+   glEnd();
+
    glColor3f(0.0f, 1.0f, 0.0f);
    glBegin(GL_QUADS);
       glVertex3f(0.0f, 0.0f, 0.0f);
@@ -266,141 +400,8 @@ void myDisplay()
 
    drawPost();
 
-   glColor3f(1.0f, 0.0f, 0.0f);
-   glBegin(GL_QUADS);
-      glVertex3f(30.0f, 0.1f, 30.0f);
-      glVertex3f(20.0f, 0.1f, 30.0f);
-      glVertex3f(20.0f, 0.1f, 20.0f);
-      glVertex3f(30.f, 0.1f, 20.0f);
-   glEnd();
+   drawFarm();
 
-   glBegin(GL_QUADS);
-      glVertex3f(20.0f, 0.1f, 30.0f);
-      glVertex3f(20.0f, 0.1f, 30.0f);
-      glVertex3f(20.0f, 5.0f, 20.0f);
-      glVertex3f(20.0f, 5.0f, 20.0f);
-   glEnd();
-
-   glBegin(GL_QUADS);
-      glVertex3f(30.0f, 30.0f, 0.0f);
-      glVertex3f(30.0f, 25.0f, 0.0f);
-      glVertex3f(30.0f, 25.0f, 5.0f);
-      glVertex3f(30.f, 30.0f, 5.0f);
-   glEnd();
-
-   glBegin(GL_TRIANGLE_STRIP);
-      glVertex3f(30.0f, 30.0f, 0.0f);
-      glVertex3f(30.0f, 30.0f, 5.0f);
-      glVertex3f(20.0f, 30.0f, 0.0f);
-      glVertex3f(20.0f, 30.0f, 0.0f);
-      glVertex3f(20.0f, 30.0f, 5.0f);
-      glVertex3f(30.0f, 30.0f, 5.0f);
-   glEnd();
-
-   glBegin(GL_TRIANGLE_STRIP);
-      glVertex3f(30.0f, 30.0f, 5.0f);
-      glVertex3f(25.0f, 30.0f, 7.0f);
-      glVertex3f(20.0f, 30.0f, 5.0f);
-   glEnd();//
-
-   glBegin(GL_TRIANGLE_STRIP);
-      glVertex3f(30.0f, 30.0f, 0.0f);
-      glVertex3f(20.0f, 30.0f, 0.0f);
-      glVertex3f(20.0f, 25.0f, 0.0f);
-      glVertex3f(20.0f, 25.0f, 0.0f);
-      glVertex3f(30.0f, 25.0f, 0.0f);
-      glVertex3f(30.0f, 30.0f, 0.0f);
-   glEnd();
-
-   glColor3f(0.0f, 0.0f, 0.0f);
-   glBegin(GL_LINES);
-      glVertex3f(30.0f, 30.0f, 0.0f);
-      glVertex3f(30.0f, 25.0f, 0.0f);
-      glVertex3f(30.0f, 25.0f, 0.0f);
-      glVertex3f(20.0f, 25.0f, 0.0f);
-      glVertex3f(20.0f, 30.0f, 0.0f);
-      glVertex3f(30.0f, 30.0f, 0.0f);
-      glVertex3f(20.0f, 30.0f, 5.0f);
-      glVertex3f(30.0f, 30.0f, 5.0f);
-      glVertex3f(30.0f, 30.0f, 0.0f);
-      glVertex3f(30.0f, 30.0f, 5.0f);
-      glVertex3f(30.0f, 25.0f, 5.0f);
-      glVertex3f(30.0f, 25.0f, 5.0f);
-   glEnd();
-
-   glColor3f(1.0f, 0.0f, 0.0f);
-   glBegin(GL_QUADS);
-      glVertex3f(20.0f, 30.0f, 0.0f);
-      glVertex3f(20.0f, 25.0f, 0.0f);
-      glVertex3f(20.0f, 25.0f, 5.0f);
-      glVertex3f(20.f,30.0f, 5.0f);
-   glEnd();
-
-
-   glColor3f(0.5f, 0.35f, 0.05f);    
-   glBegin(GL_QUADS);
-      glVertex3f(20.0f, 30.0f, 5.0f);
-      glVertex3f(25.0f, 30.0f, 7.0f);
-      glVertex3f(25.0f, 25.0f, 7.0f);
-      glVertex3f(20.0f, 25.0f, 5.0f);
-   glEnd();
-
-   glBegin(GL_QUADS);
-      glVertex3f(30.0f, 30.0f, 5.0f);
-      glVertex3f(25.0f, 30.0f, 7.0f);
-      glVertex3f(25.0f, 25.0f, 7.0f);
-      glVertex3f(30.0f, 25.0f, 5.0f);
-   glEnd();
-
-   glColor3f(1.0f, 1.0f, 1.0f);
-   glBegin(GL_QUADS);
-      glVertex3f(20.0f, 25.0f, 5.0f);
-      glVertex3f(22.0f, 20.0f, 5.0f);
-      glVertex3f(22.0f, 20.0f, 0.0f);
-      glVertex3f(20.0f, 25.0f, 0.0f);
-   glEnd();
-
-   glBegin(GL_QUADS);
-      glVertex3f(30.0f, 25.0f, 5.0f);
-      glVertex3f(28.0f, 20.0f, 5.0f);
-      glVertex3f(28.0f, 20.0f, 0.0f);
-      glVertex3f(30.0f, 25.0f, 0.0f);
-   glEnd();
-
-   glColor3f(0.5f, 0.5f, 0.5f);
-   glBegin(GL_QUADS);
-      glVertex3f(10.0f, 28.0f, 2.0f);
-      glVertex3f(15.0f, 28.0f, 2.0f);
-      glVertex3f(15.0f, 25.0f, 2.0f);
-      glVertex3f(10.0f, 25.0f, 2.0f);
-   glEnd();
-
-   glBegin(GL_QUADS);
-      glVertex3f(11.0f, 28.0f, 1.0f);
-      glVertex3f(14.0f, 28.0f, 1.0f);
-      glVertex3f(14.0f, 25.0f, 1.0f);
-      glVertex3f(11.0f, 25.0f, 1.0f);
-   glEnd();
-
-   glBegin(GL_LINES);
-      glVertex3f(10.0f, 28.0f, 2.0f);
-      glVertex3f(11.0f, 28.0f, 1.0f);
-      glVertex3f(15.0f, 28.0f, 2.0f);
-      glVertex3f(14.0f, 28.0f, 1.0f);
-      glVertex3f(15.0f, 25.0f, 2.0f);
-      glVertex3f(14.0f, 25.0f, 1.0f);
-      glVertex3f(10.0f, 25.0f, 2.0f);
-      glVertex3f(11.0f, 25.0f, 1.0f);
-
-      glVertex3f(11.0f, 28.0f, 1.0f);
-      glVertex3f(10.0f, 28.0f, 0.0f);
-      glVertex3f(14.0f, 28.0f, 1.0f);
-      glVertex3f(15.0f, 28.0f, 0.0f);
-      glVertex3f(11.0f, 25.0f, 1.0f);
-      glVertex3f(10.0f, 25.0f, 0.0f);
-      glVertex3f(14.0f, 25.0f, 1.0f);
-      glVertex3f(15.0f, 25.0f, 0.0f);
-   glEnd();
 
    glutSwapBuffers(); //swap the buffers
 
@@ -467,6 +468,11 @@ void keyboard (unsigned char key, int x, int y)
       cout << "XPOS: " << xpos << " YPOS: " << ypos << " ZPOS: " << zpos << endl;
     }
 
+    if (key=='u')
+    {
+      rotating = 1;
+    }
+
     if (key==27)
     {
       exit(0);
@@ -496,7 +502,7 @@ int main(int argc, char **argv)
 {
    glutInit(&argc, argv);
    glutInitDisplayMode (GLUT_DOUBLE | GLUT_DEPTH);
-   glutInitWindowSize(640, 480);
+   glutInitWindowSize(1000, 800);
    glutInitWindowPosition(200, 200);
    glutCreateWindow("HW 2");
    glutDisplayFunc (myDisplay);
