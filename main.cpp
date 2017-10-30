@@ -15,6 +15,9 @@ float lastx, lasty;
 float cRadius; // our radius distance from our character
 int rotating = 0;
 
+bool start = 0;
+bool forward = 0;
+
 void drawPost() 
 {
   for(double j = 0; j < 51; j += 50)
@@ -343,16 +346,68 @@ void drawFarm()
 
 void drawTrough()
 {
-  glColor3f(0.0f, 0.0f, 0.0f);
+  glColor3f(0.90f, 0.91f, 0.98f);
   glBegin(GL_QUADS);
-    glVertex3f(35.0f, 5.0f, 35.0f);
-    glVertex3f(35.0f, 0.1f, 35.0f);
-    glVertex3f(35.0f, 0.1f, 30.0f);
-    glVertex3f(35.0f, 5.0f, 30.0f);
+    glVertex3f(39.0f, 1.0f, 23.0f);
+    glVertex3f(39.0f, 2.0f, 23.0f);
+    glVertex3f(43.0f, 2.0f, 23.0f);
+    glVertex3f(43.0f, 1.0f, 23.0f);
+  glEnd();
+
+  glBegin(GL_QUADS);
+    glVertex3f(39.0f, 1.0f, 16.0f);
+    glVertex3f(39.0f, 2.0f, 16.0f);
+    glVertex3f(43.0f, 2.0f, 16.0f);
+    glVertex3f(43.0f, 1.0f, 16.0f);
+  glEnd();
+
+  glBegin(GL_QUADS);
+    glVertex3f(39.0f, 1.0f, 23.0f);
+    glVertex3f(39.0f, 2.0f, 23.0f);
+    glVertex3f(39.0f, 2.0f, 16.0f);
+    glVertex3f(39.0f, 1.0f, 16.0f);
+  glEnd();
+
+  glBegin(GL_QUADS);
+    glVertex3f(43.0f, 1.0f, 23.0f);
+    glVertex3f(43.0f, 2.0f, 23.0f);
+    glVertex3f(43.0f, 2.0f, 16.0f);
+    glVertex3f(43.0f, 1.0f, 16.0f);
+  glEnd();
+
+  glBegin(GL_QUADS);
+    glVertex3f(39.0f, 1.0f, 23.0f);
+    glVertex3f(43.0f, 1.0f, 23.0f);
+    glVertex3f(43.0f, 1.0f, 16.0f);
+    glVertex3f(39.0f, 1.0f, 16.0f);
+  glEnd();
+
+  glLineWidth(2); 
+  glBegin(GL_LINES);
+    glVertex3f(43.0f, 1.0f, 23.0f);
+    glVertex3f(43.0f, 0.1f, 23.0f);
+
+    glVertex3f(39.0f, 1.0f, 23.0f);
+    glVertex3f(39.0f, 0.1f, 23.0f);
+
+    glVertex3f(43.0f, 1.0f, 16.0f);
+    glVertex3f(43.0f, 0.1f, 16.0f);
+
+    glVertex3f(39.0f, 1.0f, 16.0f);
+    glVertex3f(39.0f, 0.1f, 16.0f);
+  glEnd();
+  glLineWidth(1);
+
+  glColor3f(1.0f, 1.0f, 0.0f);
+  glBegin(GL_QUADS);
+    glVertex3f(39.0f, 1.5f, 23.0f);
+    glVertex3f(43.0f, 1.5f, 23.0f);
+    glVertex3f(43.0f, 1.5f, 16.0f);
+    glVertex3f(39.0f, 1.5f, 16.0f);
   glEnd();
 }
 
-void myDisplay() 
+void myDisplay()
 {
    glClearColor (0.0,0.0,0.0, 1.0); //clear the screen to black
    glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //clear the color buffer and the depth buffer
@@ -369,8 +424,21 @@ void myDisplay()
 
    glTranslatef(0.0f, 0.0f, -cRadius);
    glRotatef(xrot,1.0,0.0,0.0);
+
+   if(start == 1 && forward == 0)
+   {
+      glTranslated(-xpos,0.0f,-zpos); //translate the screen to the position of our camera
+      glRotatef(xrot,1.0,0.0,0.0);
+   }
+   if(start == 1 && forward == 0)
+   {
+      glTranslated(-xpos,0.0f,-zpos); //translate the screen to the position of our camera
+      glRotatef(xrot,1.0,0.0,0.0);
+   }
+
    glColor3f(1.0f, 0.0f, 0.0f);
    glutSolidCube(2); //Our character to follow
+
    glColor3f(0.0f, 0.0f, 1.0f);
    glBegin(GL_LINES);
       glVertex3f(0.0f, 0.0f, 0.0f);
@@ -382,14 +450,6 @@ void myDisplay()
    glColor3f(1.0f, 1.0f, 1.0f);
    //cube(); //call the cube drawing function
 
-   glColor3f(1.0f, 1.0f, 1.0f);
-   glBegin(GL_QUADS);
-      glVertex2f(0.0f, 0.0f);
-      glVertex2f(0.0f, 15.0f);
-      glVertex2f(15.0f, 15.0f);
-      glVertex2f(0.0f, 15.0f);
-   glEnd();
-
    glColor3f(0.0f, 1.0f, 0.0f);
    glBegin(GL_QUADS);
       glVertex3f(0.0f, 0.0f, 0.0f);
@@ -399,8 +459,8 @@ void myDisplay()
    glEnd();
 
    drawPost();
-
    drawFarm();
+   drawTrough();
 
 
    glutSwapBuffers(); //swap the buffers
