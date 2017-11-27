@@ -4,6 +4,7 @@
 class Chicken
 {
 public:
+	int x, y, z;
 	Chicken();
 	void drawChicken();
 };
