@@ -3,6 +3,10 @@
 #include <GL/freeglut.h>
 #include <math.h>
 #include <iostream>
+#include <stdio.h>
+
+#include "./raygl.h"
+#include "./raygldefs.h"
 #include "Cow.h"
 #include "Environment.h"
 #include "Chicken.h"
@@ -20,6 +24,32 @@ bool forward = 0;
 
 Environment env;
 UFO uf;
+Chicken chick;
+
+GLuint texture[1];
+
+void loadTextures(void)
+{
+  int c;
+  glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+  
+  Image *image[1];
+  for(c = 0; c < 1; c++)
+  {
+    image[c] = (Image *) malloc(sizeof(Image));
+    if(image[c] == NULL) exit(0);
+  }
+  
+  if(!imageLoad("./25-brown-black-bird-nice-feather-texture.ppm", image[0])) exit(0);
+    glGenTextures(1, &texture[0]);
+    glBindTexture(GL_TEXTURE_2D, texture[0]);
+    glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR); 
+    glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR); 
+    glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_CLAMP_TO_EDGE); 
+    glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_WRAP_R,GL_CLAMP_TO_EDGE); 
+    glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_CLAMP_TO_EDGE); 
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, image[0]->sizeX, image[0]->sizeY, 0, GL_RGB, GL_UNSIGNED_BYTE, image[0]->data);    
+}   
 
 void myDisplay()
 {
@@ -69,6 +99,10 @@ void myDisplay()
 
    env.drawEnvironment();
    uf.drawUFO();
+   chick.x = 15;
+   chick.y = 15;
+   chick.z = 50;
+   chick.drawChicken(texture);
 
    uf.x++;
 
@@ -260,6 +294,7 @@ int main(int argc, char **argv)
    glutIdleFunc (myDisplay);
    glutReshapeFunc (myReshape);
    glutMouseFunc(mouseClicks);
+   loadTextures();
    xpos = 0; ypos = 0; zpos = 0; xrot = 0; yrot = 0; angle=0.0; cRadius = 10.0f;
 
    glutKeyboardFunc (keyboard);

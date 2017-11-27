@@ -36,5 +36,5 @@ void UFO::drawUFO()
 	glTranslatef(x+0.0f, y+1.5f, z+0.0f);
 	glColor3f(0.0f, 0.0f, 1.0f);
 	glutSolidSphere(1.0f, 50.0f, 50.0f);
-
+	glTranslatef(-x+0.0f, y+1.5f, z+0.0f);
 }

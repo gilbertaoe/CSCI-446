@@ -1,12 +1,21 @@
-#ifndef _CHICKEN_H_
-#define _CHICKEN_H_
+#ifndef _CHICKEN_H
+#define _CHICKEN_H
+
+#include <GL/gl.h>
+#include <GL/glu.h>
+#include <GL/freeglut.h>
+#include <math.h>
 
 class Chicken
 {
 public:
+	GLfloat LAngle, RAngle;
+	int lastSub, lastAdd;
 	int x, y, z;
 	Chicken();
-	void drawChicken();
+	void drawChicken(GLuint texture[]);
+	void rWing();
+	void lWing();
 };
 
 #endif

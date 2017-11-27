@@ -1,38 +1,19 @@
 #include "Chicken.h"
+#include <GL/gl.h>
+#include <GL/glu.h>
+#include <GL/freeglut.h>
+#include <math.h>
 
 Chicken::Chicken()
 {
 	x = 0;
 	y = 0;
 	z = 0;
-}
+	lastSub = 1;
+	lastAdd = 1;
+}  
 
-GLuint texture[1];
-
-void loadTextures(void)
-{
-	int c;
-	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-	
-	Image *image[1];
-	for(c = 0; c < 1; c++)
-	{
-		image[c] = (Image *) malloc(sizeof(Image));
-		if(image[c] == NULL) exit(0);
-	}
-	
-	if(!imageLoad("./25-brown-black-bird-nice-feather-texture.ppm", image[0])) exit(0);
-    glGenTextures(1, &texture[0]);
-    glBindTexture(GL_TEXTURE_2D, texture[0]);
-    glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR); 
-    glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR); 
-    glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_CLAMP_TO_EDGE); 
-    glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_WRAP_R,GL_CLAMP_TO_EDGE); 
-    glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_CLAMP_TO_EDGE); 
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, image[0]->sizeX, image[0]->sizeY, 0, GL_RGB, GL_UNSIGNED_BYTE, image[0]->data);    
-}    
-
-void lWing()
+void Chicken::lWing()
 {
 	if(LAngle > -90 && lastSub == 1)
 	{
@@ -54,7 +35,7 @@ void lWing()
 	}
 }
 
-void rWing()
+void Chicken::rWing()
 {
 	if(RAngle < 90 && lastAdd == 1)
 	{
@@ -76,7 +57,7 @@ void rWing()
 	}
 	
 }
-void Chicken::drawChicken(GLuint **texture)
+void Chicken::drawChicken(GLuint texture[])
 {
 	  glBindTexture(GL_TEXTURE_2D, texture[0]);
 	  //The body
