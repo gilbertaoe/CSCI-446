@@ -6,9 +6,9 @@
 
 Chicken::Chicken()
 {
-	x = 0;
-	y = 0;
-	z = 0;
+	x = 15;
+	y = 1;
+	z = 15;
 	lastSub = 1;
 	lastAdd = 1;
 }  
@@ -54,9 +54,9 @@ void Chicken::rWing()
 	{
 		lastAdd = 1;
 		RAngle += 1.0f;
-	}
-	
+	}	
 }
+
 void Chicken::drawChicken(GLuint texture[])
 {
 	  glBindTexture(GL_TEXTURE_2D, texture[0]);
@@ -325,4 +325,6 @@ void Chicken::drawChicken(GLuint texture[])
 	glEnd();
 	glPopMatrix();
 	
+	//lWing();
+	//rWing();
 }
