@@ -5,7 +5,7 @@ class Environment
 {
 public:
 	Environment();
-	void drawEnvironment();
+	void drawEnvironment(GLuint texture[]);
 };
 
 #endif

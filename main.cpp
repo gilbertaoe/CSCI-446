@@ -26,15 +26,15 @@ UFO uf;
 Chicken chick;
 Cow woc;
 
-GLuint texture[1];
+GLuint texture[6];
 
 void loadTextures(void)
 {
   int c;
   glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
   
-  Image *image[1];
-  for(c = 0; c < 1; c++)
+  Image *image[6];
+  for(c = 0; c < 6; c++)
   {
     image[c] = (Image *) malloc(sizeof(Image));
     if(image[c] == NULL) exit(0);
@@ -48,7 +48,57 @@ void loadTextures(void)
     glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_CLAMP_TO_EDGE); 
     glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_WRAP_R,GL_CLAMP_TO_EDGE); 
     glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_CLAMP_TO_EDGE); 
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, image[0]->sizeX, image[0]->sizeY, 0, GL_RGB, GL_UNSIGNED_BYTE, image[0]->data);    
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, image[0]->sizeX, image[0]->sizeY, 0, GL_RGB, GL_UNSIGNED_BYTE, image[0]->data);
+
+  if(!imageLoad("./aaa.ppm", image[1])) exit(0);
+    glGenTextures(1, &texture[1]);
+    glBindTexture(GL_TEXTURE_2D, texture[1]);
+    glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR); 
+    glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR); 
+    glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_CLAMP_TO_EDGE); 
+    glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_WRAP_R,GL_CLAMP_TO_EDGE); 
+    glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_CLAMP_TO_EDGE); 
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, image[1]->sizeX, image[1]->sizeY, 0, GL_RGB, GL_UNSIGNED_BYTE, image[1]->data); 
+
+  if(!imageLoad("./minecraft_cow.ppm", image[2])) exit(0);
+    glGenTextures(1, &texture[2]);
+    glBindTexture(GL_TEXTURE_2D, texture[2]);
+    glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR); 
+    glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR); 
+    glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_CLAMP_TO_EDGE); 
+    glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_WRAP_R,GL_CLAMP_TO_EDGE); 
+    glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_CLAMP_TO_EDGE); 
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, image[2]->sizeX, image[2]->sizeY, 0, GL_RGB, GL_UNSIGNED_BYTE, image[2]->data);
+
+  if(!imageLoad("./grass.ppm", image[3])) exit(0);
+    glGenTextures(1, &texture[3]);
+    glBindTexture(GL_TEXTURE_2D, texture[3]);
+    glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR); 
+    glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR); 
+    glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_CLAMP_TO_EDGE); 
+    glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_WRAP_R,GL_CLAMP_TO_EDGE); 
+    glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_CLAMP_TO_EDGE); 
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, image[3]->sizeX, image[3]->sizeY, 0, GL_RGB, GL_UNSIGNED_BYTE, image[3]->data); 
+
+  if(!imageLoad("./index.ppm", image[4])) exit(0);
+    glGenTextures(1, &texture[4]);
+    glBindTexture(GL_TEXTURE_2D, texture[4]);
+    glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR); 
+    glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR); 
+    glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_CLAMP_TO_EDGE); 
+    glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_WRAP_R,GL_CLAMP_TO_EDGE); 
+    glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_CLAMP_TO_EDGE); 
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, image[4]->sizeX, image[4]->sizeY, 0, GL_RGB, GL_UNSIGNED_BYTE, image[4]->data); 
+
+  if(!imageLoad("./roof.ppm", image[5])) exit(0);
+    glGenTextures(1, &texture[5]);
+    glBindTexture(GL_TEXTURE_2D, texture[5]);
+    glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR); 
+    glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR); 
+    glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_CLAMP_TO_EDGE); 
+    glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_WRAP_R,GL_CLAMP_TO_EDGE); 
+    glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_CLAMP_TO_EDGE); 
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, image[5]->sizeX, image[5]->sizeY, 0, GL_RGB, GL_UNSIGNED_BYTE, image[5]->data);     
 }   
 
 void myDisplay()
@@ -63,13 +113,13 @@ void myDisplay()
    glEnable(GL_LIGHT0);
    glEnable(GL_COLOR_MATERIAL);
 
-   GLfloat white[] = {1.0f, 1.0f, 1.0f, 1.0f};
+   GLfloat white[] = {0.4f, 1.0f, 1.0f, 1.0f};
    glMaterialfv(GL_FRONT, GL_DIFFUSE, white);
-   glMaterialfv(GL_FRONT, GL_AMBIENT, white);
+   //glMaterialfv(GL_FRONT, GL_AMBIENT, white);
    
    //Global Light model, potentially will double the amount of ambient light in the scene
    GLfloat intensity[] = {0.4f, 0.4f, 0.4f, 1.0f};
-   glLightModel(GL_LIGHT_MODEL_AMBIENT, intensity);
+   glLightModelfv(GL_LIGHT_MODEL_AMBIENT, intensity);
    //End Global Light Model
 
    glColor3f(1.0f, 1.0f, 1.0f);
@@ -101,10 +151,10 @@ void myDisplay()
    glColor3f(1.0f, 1.0f, 1.0f);
    //cube(); //call the cube drawing function
 
-   env.drawEnvironment();
+   env.drawEnvironment(texture);
    uf.drawUFO();
    chick.drawChicken(texture);
-   woc.drawCow();
+   woc.drawCow(texture);
 
    //uf.x++;
 

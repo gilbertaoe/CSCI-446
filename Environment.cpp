@@ -217,7 +217,7 @@ void drawPost()
 	}
 }
 
-void drawFarm()
+void drawFarm(GLuint texture[])
 {
 	glLineWidth(2);
 	glColor3f(0.0f, 0.0f, 0.0f);
@@ -236,48 +236,50 @@ void drawFarm()
 	glEnd();
 	glLineWidth(1);
 
+	glBindTexture(GL_TEXTURE_2D, texture[4]);
 	glColor3f(0.80f, 0.0f, 0.0f);
 	glBegin(GL_QUADS);
-		glVertex3f(48.0f, 0.1f, 30.0f);
-		glVertex3f(35.0f, 0.1f, 30.0f);
-		glVertex3f(35.0f, 0.1f, 48.0f);
-		glVertex3f(48.0f, 0.1f, 48.0f);
+		glTexCoord2d(0.0,0.0); glVertex3f(48.0f, 0.1f, 30.0f);
+		glTexCoord2d(0.0,1.0); glVertex3f(35.0f, 0.1f, 30.0f);
+		glTexCoord2d(1.0,1.0); glVertex3f(35.0f, 0.1f, 48.0f);
+		glTexCoord2d(1.0,0.0); glVertex3f(48.0f, 0.1f, 48.0f);
 	glEnd();
 
 	glBegin(GL_QUADS);
-		glVertex3f(48.0f, 0.1f, 30.0f);
-		glVertex3f(48.0f, 0.1f, 48.0f);
-		glVertex3f(48.0f, 5.0f, 48.0f);
-		glVertex3f(48.0f, 5.0f, 30.0f);
+		glTexCoord2d(0.0,0.0); glVertex3f(48.0f, 0.1f, 30.0f);
+		glTexCoord2d(0.0,1.0); glVertex3f(48.0f, 0.1f, 48.0f);
+		glTexCoord2d(1.0,1.0); glVertex3f(48.0f, 5.0f, 48.0f);
+		glTexCoord2d(1.0,0.0); glVertex3f(48.0f, 5.0f, 30.0f);
 	glEnd();
 
 	glBegin(GL_QUADS);
-		glVertex3f(48.0f, 0.1f, 30.0f);
-		glVertex3f(35.0f, 0.1f, 30.0f);
-		glVertex3f(35.0f, 5.0f, 30.0f);
-		glVertex3f(48.0f, 5.0f, 30.0f);
+		glTexCoord2d(0.0,0.0); glVertex3f(48.0f, 0.1f, 30.0f);
+		glTexCoord2d(0.0,1.0); glVertex3f(35.0f, 0.1f, 30.0f);
+		glTexCoord2d(1.0,1.0); glVertex3f(35.0f, 5.0f, 30.0f);
+		glTexCoord2d(1.0,0.0); glVertex3f(48.0f, 5.0f, 30.0f);
 	glEnd();
 
 	glBegin(GL_QUADS);
-		glVertex3f(48.0f, 0.1f, 48.0f);
-		glVertex3f(35.0f, 0.1f, 48.0f);
-		glVertex3f(35.0f, 5.0f, 48.0f);
-		glVertex3f(48.0f, 5.0f, 48.0f);
+		glTexCoord2d(0.0,0.0); glVertex3f(48.0f, 0.1f, 48.0f);
+		glTexCoord2d(0.0,1.0); glVertex3f(35.0f, 0.1f, 48.0f);
+		glTexCoord2d(1.0,1.0); glVertex3f(35.0f, 5.0f, 48.0f);
+		glTexCoord2d(1.0,0.0); glVertex3f(48.0f, 5.0f, 48.0f);
 	glEnd();
 
+	glBindTexture(GL_TEXTURE_2D, texture[5]);
 	glColor3f(0.80f, 1.0f, 0.0f);
 	glBegin(GL_QUADS);
-		glVertex3f(48.0f, 5.0f, 48.0f);
-		glVertex3f(42.0f, 9.0f, 48.0f);
-		glVertex3f(42.0f, 9.0f, 30.0f);
-		glVertex3f(48.0f, 5.0f, 30.0f);
+		glTexCoord2d(0.0,0.0); glVertex3f(48.0f, 5.0f, 48.0f);
+		glTexCoord2d(0.0,1.0); glVertex3f(42.0f, 9.0f, 48.0f);
+		glTexCoord2d(1.0,1.0); glVertex3f(42.0f, 9.0f, 30.0f);
+		glTexCoord2d(1.0,0.0); glVertex3f(48.0f, 5.0f, 30.0f);
 	glEnd();
 
 	glBegin(GL_QUADS);
-		glVertex3f(35.0f, 5.0f, 48.0f);
-		glVertex3f(42.0f, 9.0f, 48.0f);
-		glVertex3f(42.0f, 9.0f, 30.0f);
-		glVertex3f(35.0f, 5.0f, 30.0f);
+		glTexCoord2d(0.0,0.0); glVertex3f(35.0f, 5.0f, 48.0f);
+		glTexCoord2d(0.0,1.0); glVertex3f(42.0f, 9.0f, 48.0f);
+		glTexCoord2d(1.0,1.0); glVertex3f(42.0f, 9.0f, 30.0f);
+		glTexCoord2d(1.0,0.0); glVertex3f(35.0f, 5.0f, 30.0f);
 	glEnd();
 
 	glColor3f(0.80f, 1.0f, 1.0f);
@@ -293,37 +295,23 @@ void drawFarm()
 		glVertex3f(48.0f, 5.0f, 48.0f);
 	glEnd();
 
+	glBindTexture(GL_TEXTURE_2D, texture[4]);
 	glColor3f(0.80f, 0.0f, 1.0f);
 	glBegin(GL_QUADS);
-		glVertex3f(35.0f, 5.0f, 48.0f);
-		glVertex3f(35.0f, 0.1f, 48.0f);
-		glVertex3f(35.0f, 0.1f, 35.0f);
-		glVertex3f(35.0f, 5.0f, 35.0f);
+		glTexCoord2d(0.0,0.0); glVertex3f(35.0f, 5.0f, 48.0f);
+		glTexCoord2d(0.0,1.0); glVertex3f(35.0f, 0.1f, 48.0f);
+		glTexCoord2d(1.0,1.0); glVertex3f(35.0f, 0.1f, 35.0f);
+		glTexCoord2d(1.0,0.0); glVertex3f(35.0f, 5.0f, 35.0f);
 	glEnd();
 
 	glBegin(GL_QUADS);
-		glVertex3f(35.0f, 5.0f, 35.0f);
-		glVertex3f(35.0f, 0.1f, 35.0f);
-		glVertex3f(35.0f, 0.1f, 30.0f);
-		glVertex3f(35.0f, 5.0f, 30.0f);
+		glTexCoord2d(0.0,0.0); glVertex3f(35.0f, 5.0f, 35.0f);
+		glTexCoord2d(0.0,1.0); glVertex3f(35.0f, 0.1f, 35.0f);
+		glTexCoord2d(1.0,1.0); glVertex3f(35.0f, 0.1f, 30.0f);
+		glTexCoord2d(1.0,0.0); glVertex3f(35.0f, 5.0f, 30.0f);
 	glEnd();
 
 	glColor3f(0.0f, 0.0f, 0.0f);
-	glBegin(GL_LINES);
-		glVertex3f(34.9f, 5.0f, 48.0f);
-		glVertex3f(34.9f, 0.1f, 39.0f);
-
-		glVertex3f(34.9f, 5.0f, 39.0f);
-		glVertex3f(34.9f, 0.1f, 48.0f);
-	glEnd();
-
-	glBegin(GL_LINES);
-		glVertex3f(34.9f, 5.0f, 39.0f);
-		glVertex3f(34.9f, 0.1f, 30.0f);
-
-		glVertex3f(34.9f, 5.0f, 30.0f);
-		glVertex3f(34.9f, 0.1f, 39.0f);
-	glEnd();
 
 	glBegin(GL_LINES);
 		glVertex3f(34.9f, 5.0f, 39.0f);
@@ -399,17 +387,19 @@ Environment::Environment()
 
 }
 
-void Environment::drawEnvironment()
+void Environment::drawEnvironment(GLuint texture[])
 {
+	glBindTexture(GL_TEXTURE_2D, texture[3]);
 	glColor3f(0.0f, 1.0f, 0.0f);
 	glBegin(GL_QUADS);
-		glVertex3f(0.0f, 0.0f, 0.0f);
-		glVertex3f(0.0f, 0.0f, 52.0f);
-		glVertex3f(52.0f, 0.0f, 52.0f);
-		glVertex3f(52.f, 0.0f, 0.0f);
+		glTexCoord2d(0.0,0.0); glVertex3f(0.0f, 0.0f, 0.0f);
+		glTexCoord2d(0.0,1.0); glVertex3f(0.0f, 0.0f, 52.0f);
+		glTexCoord2d(1.0,1.0); glVertex3f(52.0f, 0.0f, 52.0f);
+		glTexCoord2d(1.0,0.0); glVertex3f(52.f, 0.0f, 0.0f);
 	glEnd();
+	//glDisable (GL_TEXTURE_2D);
 
 	drawPost();
-	drawFarm();
+	drawFarm(texture);
 	drawTrough();
 }

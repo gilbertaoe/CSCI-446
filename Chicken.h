@@ -11,7 +11,7 @@ class Chicken
 public:
 	GLfloat LAngle, RAngle;
 	int lastSub, lastAdd;
-	int x, y, z;
+	float x, y, z;
 	Chicken();
 	void drawChicken(GLuint texture[]);
 	void rWing();

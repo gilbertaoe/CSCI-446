@@ -7,7 +7,7 @@
 Chicken::Chicken()
 {
 	x = 15;
-	y = 1;
+	y = .01;
 	z = 15;
 	lastSub = 1;
 	lastAdd = 1;

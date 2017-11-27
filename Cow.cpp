@@ -7,11 +7,11 @@
 Cow::Cow()
 {
 	x = 10;
-	y = 1;
+	y = .01;
 	z = 15;
 }
 
-void Cow::head()
+void Cow::head(GLuint texture[])
 {  
    //Head
    /*
@@ -34,7 +34,7 @@ void Cow::head()
 
    //texture = LoadTexture( "aaa.ppm", 560, 350);
 
-   glBindTexture( GL_TEXTURE_2D, texture);
+   glBindTexture( GL_TEXTURE_2D, texture[1]);
 
    glBegin(GL_QUADS);
 
@@ -68,7 +68,7 @@ void Cow::head()
 
    //texture = LoadTexture( "minecraft_cow.ppm", 65, 64);
 
-   glBindTexture( GL_TEXTURE_2D, texture);
+   glBindTexture( GL_TEXTURE_2D, texture[2]);
 
    glBegin(GL_QUADS);
 
@@ -84,7 +84,7 @@ void Cow::head()
    glColor4f(1.0f, 0.0f, 0.0f, 0.0f);
 }
 
-void Cow::backLeftLegTop()
+void Cow::backLeftLegTop(GLuint texture[])
 {
 
    glTranslatef(x + 0.9f, y+ -1.4f, z + -1.9f);
@@ -127,7 +127,7 @@ void Cow::backLeftLegTop()
    glEnd();
 }
 
-void Cow::backRightLegTop()
+void Cow::backRightLegTop(GLuint texture[])
 {
 
    glTranslatef(x + -0.9f, y+-1.4f,z+-1.9f);
@@ -170,7 +170,7 @@ void Cow::backRightLegTop()
    glEnd();
 }
 
-void Cow::backLeftLegBot()
+void Cow::backLeftLegBot(GLuint texture[])
 {
 
    glBegin(GL_QUADS);
@@ -208,7 +208,7 @@ void Cow::backLeftLegBot()
    glEnd();
 } 
 
-void Cow::backRightLegBot()
+void Cow::backRightLegBot(GLuint texture[])
 {
 
    glBegin(GL_QUADS);
@@ -246,7 +246,7 @@ void Cow::backRightLegBot()
    glEnd();
 } 
 
-void Cow::frontLeftLegBot()
+void Cow::frontLeftLegBot(GLuint texture[])
 {
 
    glBegin(GL_QUADS);
@@ -288,7 +288,7 @@ void Cow::frontLeftLegBot()
    glEnd();
 }
 
-void Cow::frontRightLegBot()
+void Cow::frontRightLegBot(GLuint texture[])
 {
    glBegin(GL_QUADS);
 
@@ -329,7 +329,7 @@ void Cow::frontRightLegBot()
    glEnd();
 }
 
-void Cow::frontLeftLegTop()
+void Cow::frontLeftLegTop(GLuint texture[])
 {
 
    glTranslatef(x+0.9f, y+-1.4f, z+0.9f);
@@ -391,7 +391,7 @@ void Cow::frontLeftLegTop()
    glEnd();
 }
 
-void Cow::frontRightLegTop()
+void Cow::frontRightLegTop(GLuint texture[])
 {
 
    glTranslatef(x+-0.9f, y+-1.4f, z+0.9f);
@@ -452,7 +452,7 @@ void Cow::frontRightLegTop()
    glEnd();
 }
 
-void Cow::body()
+void Cow::body(GLuint texture[])
 {
 
    glTranslatef(x+0.9f, y+-1.0f, z+-1.9f);
@@ -475,7 +475,7 @@ void Cow::body()
 
    //texture = LoadTexture( "aaa.ppm", 560, 350);
 
-   glBindTexture( GL_TEXTURE_2D, texture);
+   glBindTexture( GL_TEXTURE_2D, texture[1]);
 
    glBegin(GL_QUADS);
    /*
@@ -533,7 +533,7 @@ void Cow::body()
    //glColor4f(1.0f, 1.0f, 1.0f, 0.0f);
 }
 
-void Cow::drawCow()
+void Cow::drawCow(GLuint texture[])
 {
 
    GLfloat angle = 0; 
@@ -543,29 +543,29 @@ void Cow::drawCow()
    GLfloat phase = 1;
 
    glTranslatef(x + 1.0,y + 1.0,z + 0.0);
-   head();
-   body();
+   head(texture);
+   body(texture);
 
 
-      frontRightLegTop();
+      frontRightLegTop(texture);
 
-      frontLeftLegTop();
+      frontLeftLegTop(texture);
       //angle--;
 
-            frontRightLegBot();
+            frontRightLegBot(texture);
 
-            frontLeftLegBot();
+            frontLeftLegBot(texture);
       //angle3++;
 
 
-      backLeftLegTop();         
+      backLeftLegTop(texture);         
 
-      backRightLegTop();
+      backRightLegTop(texture);
 
       //angle2--;
-            backRightLegBot();
+            backRightLegBot(texture);
 
-            backLeftLegBot();
+            backLeftLegBot(texture);
       //angle4++;
 
          glTranslatef(-x + 1.0,-y + 1.0,-z + 0.0);

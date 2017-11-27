@@ -9,20 +9,19 @@
 class Cow
 {
 public:
-	int x,y,z;
+	float x,y,z;
 	Cow();
-	void head();
-	void backLeftLegTop();
-	void backRightLegTop();
-	void backLeftLegBot();
-	void backRightLegBot();
-	void frontLeftLegBot();
-	void frontRightLegBot();
-	void frontLeftLegTop();
-	void frontRightLegTop();
-	void body();
-	void drawCow();
-	GLuint texture;
+	void head(GLuint texture[]);
+	void backLeftLegTop(GLuint texture[]);
+	void backRightLegTop(GLuint texture[]);
+	void backLeftLegBot(GLuint texture[]);
+	void backRightLegBot(GLuint texture[]);
+	void frontLeftLegBot(GLuint texture[]);
+	void frontRightLegBot(GLuint texture[]);
+	void frontLeftLegTop(GLuint texture[]);
+	void frontRightLegTop(GLuint texture[]);
+	void body(GLuint texture[]);
+	void drawCow(GLuint texture[]);
 };
 
 #endif
