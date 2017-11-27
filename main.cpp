@@ -4,13 +4,12 @@
 #include <math.h>
 #include <iostream>
 #include <stdio.h>
-
 #include "./raygl.h"
 #include "./raygldefs.h"
-#include "Cow.h"
 #include "Environment.h"
 #include "Chicken.h"
 #include "UFO.h"
+#include "Cow.h"
 
 using namespace std;
 
@@ -25,6 +24,7 @@ bool forward = 0;
 Environment env;
 UFO uf;
 Chicken chick;
+Cow woc;
 
 GLuint texture[1];
 
@@ -63,9 +63,8 @@ void myDisplay()
    glEnable(GL_LIGHT0);
    glEnable(GL_COLOR_MATERIAL);
 
-   GLfloat white[] = {0.8f, 0.8f, 0.8f, 1.0f};
-   GLfloat cyan[] = {0.0f, 0.8f, 0.8f, 1.0f};
-   glMaterialfv(GL_FRONT, GL_DIFFUSE, cyan);
+   GLfloat white[] = {1.0f, 1.0f, 1.0f, 1.0f};
+   glMaterialfv(GL_FRONT, GL_DIFFUSE, white);
    glMaterialfv(GL_FRONT, GL_AMBIENT, white);
    
    //Global Light model, potentially will double the amount of ambient light in the scene
@@ -73,15 +72,15 @@ void myDisplay()
    glLightModel(GL_LIGHT_MODEL_AMBIENT, intensity);
    //End Global Light Model
 
-   GLfloat lightpos[] = {10, 10, 10, 1.0};
-   glLightfv(GL_LIGHT0, GL_POSITION, lightpos);
-
    glColor3f(1.0f, 1.0f, 1.0f);
 
 
-   glTranslatef(0.0f, 0.0f, -50);
-   glRotatef(35,1.0,0.0,0.0);
-    //glRotatef(xrot,1.0,0.0,0.0);
+  glTranslatef(0.0f, 0.0f, -50);
+  glRotatef(35,1.0,0.0,0.0);
+  //glRotatef(xrot,1.0,0.0,0.0);
+
+  GLfloat lightpos[] = {5, 1.5, 15, 10.0};
+  glLightfv(GL_LIGHT0, GL_POSITION, lightpos);
 
 
    if(start == 1 && forward == 1)
@@ -104,12 +103,10 @@ void myDisplay()
 
    env.drawEnvironment();
    uf.drawUFO();
-   chick.x = 15;
-   chick.y = 15;
-   chick.z = 50;
    chick.drawChicken(texture);
+   woc.drawCow();
 
-   uf.x++;
+   //uf.x++;
 
 
    //start 2d
