@@ -67,6 +67,11 @@ void myDisplay()
    GLfloat cyan[] = {0.0f, 0.8f, 0.8f, 1.0f};
    glMaterialfv(GL_FRONT, GL_DIFFUSE, cyan);
    glMaterialfv(GL_FRONT, GL_AMBIENT, white);
+   
+   //Global Light model, potentially will double the amount of ambient light in the scene
+   GLfloat intensity[] = {0.4f, 0.4f, 0.4f, 1.0f};
+   glLightModel(GL_LIGHT_MODEL_AMBIENT, intensity);
+   //End Global Light Model
 
    GLfloat lightpos[] = {10, 10, 10, 1.0};
    glLightfv(GL_LIGHT0, GL_POSITION, lightpos);
