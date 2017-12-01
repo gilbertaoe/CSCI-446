@@ -14,10 +14,10 @@ CFLAGS = $(COMPILERFLAGS) $(INCLUDE)
 LFLAGS = -static -c
 LIBRARIES = -lglut -lGL -lGLU -lm 
 
-hw8: hw8.o
+main: Chicken.o Environment.o Cow.o UFO.o main.o
 	$(CC) $(RAYGL) $(INCLUDE) $(INCLUDEGL) $(CFLAGS) -o $@ $(LIBDIR) $(LIBS) $< $(LIBRARIES)  
 
-template: hw8.o
+template: main.o
 	$(CC) $(RAYGL) $(PGMIO) $(INCLUDE) $(INCLUDEGL) $(CFLAGS) -o $@ $(LIBDIR) $(LIBS) $< $(LIBRARIES)  
 
 raygl: 
@@ -26,3 +26,4 @@ raygl:
 clean:
 	rm *.pov
 	rm *.png
+	rm main

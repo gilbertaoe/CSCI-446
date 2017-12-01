@@ -3,6 +3,8 @@
 #include <GL/glu.h>
 #include <GL/freeglut.h>
 #include <math.h>
+#include "./raygl.h"
+#include "./raygldefs.h"
 
 UFO::UFO()
 {

@@ -1,3 +1,4 @@
+//Austin Gilbert, Chase Davis, Ben Linser, David Sexter
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include <GL/freeglut.h>
@@ -122,6 +123,12 @@ void myDisplay()
    glLightModelfv(GL_LIGHT_MODEL_AMBIENT, intensity);
    //End Global Light Model
 
+   rayglTextureType(0);
+   rayglTranslateTexture(0, 0, 0);
+   rayglScaleTexture(1, 1, 1);
+   setFadeDistance(1000);
+   setFadePower(1.4);
+
    glColor3f(1.0f, 1.0f, 1.0f);
 
 
@@ -151,11 +158,15 @@ void myDisplay()
    glColor3f(1.0f, 1.0f, 1.0f);
    //cube(); //call the cube drawing function
 
+
+   rayglFrameBegin("movie");
+
    env.drawEnvironment(texture);
    uf.drawUFO();
    chick.drawChicken(texture);
    woc.drawCow(texture);
 
+   rayglFrameEnd();
    //uf.x++;
 
 

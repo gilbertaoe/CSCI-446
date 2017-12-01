@@ -4,6 +4,7 @@
 #include <GL/freeglut.h>
 #include <math.h>
 
+
 Cow::Cow()
 {
 	x = 10;
@@ -536,11 +537,11 @@ void Cow::body(GLuint texture[])
 void Cow::drawCow(GLuint texture[])
 {
 
-   GLfloat angle = 0; 
-   GLfloat angle2 = 0; 
-   GLfloat angle3 = 0;
-   GLfloat angle4 = 0;
-   GLfloat phase = 1;
+   //GLfloat angle = 0; 
+   //GLfloat angle2 = 0; 
+   //GLfloat angle3 = 0;
+   //GLfloat angle4 = 0;
+   //GLfloat phase = 1;
 
    glTranslatef(x + 1.0,y + 1.0,z + 0.0);
    head(texture);

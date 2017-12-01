@@ -4,6 +4,8 @@
 #include <math.h>
 #include <iostream>
 #include "Environment.h"
+#include "./raygl.h"
+#include "./raygldefs.h"
 
 void drawPost() 
 {

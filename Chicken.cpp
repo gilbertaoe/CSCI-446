@@ -3,6 +3,8 @@
 #include <GL/glu.h>
 #include <GL/freeglut.h>
 #include <math.h>
+#include "./raygl.h"
+#include "./raygldefs.h"
 
 Chicken::Chicken()
 {
@@ -59,7 +61,8 @@ void Chicken::rWing()
 
 void Chicken::drawChicken(GLuint texture[])
 {
-	  glBindTexture(GL_TEXTURE_2D, texture[0]);
+
+	glBindTexture(GL_TEXTURE_2D, texture[0]);
 	  //The body
   	glBegin(GL_QUADS);
    	  //Top face
