@@ -1,0 +1,5 @@
+make clean
+make main
+./main
+povray +P -UV +w800 +h600 movie0000000004.pov
+

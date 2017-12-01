@@ -1,4 +1,12 @@
-//Austin Gilbert, Chase Davis, Ben Linser, David Sexter
+/**************************************************/
+/* Name: Ben Linser                               */
+/* Name: Chase Davis                              */
+/* Name: Austin Gilbert                           */
+/*                                                */
+/* HW11                                           */
+/*                                                */
+/* CSci 446 / Fall 2017                           */
+/**************************************************/
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include <GL/freeglut.h>
@@ -18,7 +26,7 @@ GLfloat LAngle, RAngle;
 
 GLuint texture[6];
 
-int x, y, z = 0;
+GLfloat x, y, z = 0;
 
 int lastSub = 1;
 int lastAdd = 1;
@@ -1316,7 +1324,7 @@ void drawEnvironment(GLuint texture[])
     glTexCoord2d(1.0,1.0); glVertex3f(52.0f, 0.0f, 52.0f);
     glTexCoord2d(1.0,0.0); glVertex3f(52.f, 0.0f, 0.0f);
   glEnd();
-  //glDisable (GL_TEXTURE_2D);
+  glDisable (GL_TEXTURE_2D);
 
   drawPost();
   drawFarm(texture);
@@ -1396,43 +1404,50 @@ void loadTextures(void)
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, image[5]->sizeX, image[5]->sizeY, 0, GL_RGB, GL_UNSIGNED_BYTE, image[5]->data);     
 }   
 
+void lightc()
+{
+      GLfloat position[] = {5, 1.5, 15, 10.0};
+
+       glLightModeli(GL_LIGHT_MODEL_COLOR_CONTROL, GL_SINGLE_COLOR); 
+ //  glLightModeli(GL_LIGHT_MODEL_COLOR_CONTROL, GL_SEPERATE_SPECULAR_COLOR); 
+    glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER, GL_FALSE);
+
+    glLightfv(GL_LIGHT0, GL_POSITION, position);
+
+          // Ambient "light source".
+      GLfloat ambient[] = {0.4f, 1.0f, 1.0f, 1.0f};
+      GLfloat ambient_intensity[] = {0.4f, 0.4f, 0.4f, 1.0f};
+    glColorMaterial(GL_FRONT, GL_AMBIENT);
+    glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambient_intensity);
+    glLightfv(GL_LIGHT0, GL_AMBIENT, ambient);
+
+ GLfloat diffuse[]  = {1.0, 1.0, 1.0, 1.0};
+     glColorMaterial(GL_FRONT, GL_DIFFUSE);
+    glLightfv(GL_LIGHT0, GL_DIFFUSE,  diffuse);
+
+     // Spectular light source.
+ GLfloat specular[] = {1.0, 1.0, 1.0, 1.0}; 
+    glColorMaterial(GL_FRONT, GL_SPECULAR);
+    glLightfv(GL_LIGHT0, GL_SPECULAR, specular);
+
+
+    glEnable(GL_COLOR_MATERIAL);
+    glEnable(GL_LIGHTING);
+    glEnable(GL_LIGHT0);
+    glEnable(GL_NORMALIZE);
+    glShadeModel(GL_FLAT);
+}
+
 void myDisplay()
 {
+
    glClearColor (0.0,0.0,0.0, 1.0); //clear the screen to black
    glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //clear the color buffer and the depth buffer
-   glLoadIdentity(); 
-   //position();
-   glEnable (GL_DEPTH_TEST); //enable the depth testing
-   glShadeModel (GL_SMOOTH); //set the shader to smooth shader
-   glEnable(GL_LIGHTING);
-   glEnable(GL_LIGHT0);
-   glEnable(GL_COLOR_MATERIAL);
-
-   GLfloat white[] = {0.4f, 1.0f, 1.0f, 1.0f};
-   glMaterialfv(GL_FRONT, GL_DIFFUSE, white);
-   //glMaterialfv(GL_FRONT, GL_AMBIENT, white);
-   
-   //Global Light model, potentially will double the amount of ambient light in the scene
-   GLfloat intensity[] = {0.4f, 0.4f, 0.4f, 1.0f};
-   glLightModelfv(GL_LIGHT_MODEL_AMBIENT, intensity);
-   //End Global Light Model
-
-   rayglTextureType(0);
-   rayglTranslateTexture(0, 0, 0);
-   rayglScaleTexture(1, 1, 1);
-   setFadeDistance(1000);
-   setFadePower(1.4);
+   glLoadIdentity();
 
    glColor3f(1.0f, 1.0f, 1.0f);
-
-
-  glTranslatef(0.0f, 0.0f, -50);
-  glRotatef(35,1.0,0.0,0.0);
-  //glRotatef(xrot,1.0,0.0,0.0);
-
-  GLfloat lightpos[] = {5, 1.5, 15, 10.0};
-  glLightfv(GL_LIGHT0, GL_POSITION, lightpos);
-
+   glTranslatef(0.0f, 0.0f, -50);
+   glRotatef(35,1.0,0.0,0.0);
 
    if(start == 1 && forward == 1)
    {
@@ -1456,11 +1471,13 @@ void myDisplay()
    rayglFrameBegin("movie");
 
    drawEnvironment(texture);
+   x = 0; y = 10; z = 0;
    drawUFO();
+   x = 10; y = 0.01; z = 15;
    drawChicken(texture);
+   x = 15; y = 0.01; z = 15;
    drawCow(texture);
 
-   rayglFrameEnd();
    //uf.x++;
 
 
@@ -1501,12 +1518,22 @@ void myDisplay()
 
    glutSwapBuffers(); //swap the buffers
 
+   rayglFrameEnd();
+
    angle++;
 }
 
 void myInit(void)
 {
-
+   
+   rayglTextureType(0);
+   rayglTranslateTexture(0, 0, 0);
+   rayglScaleTexture(1, 1, 1);
+   setFadeDistance(1000);
+   setFadePower(1.4);
+   glEnable (GL_DEPTH_TEST); //enable the depth testing
+   glShadeModel (GL_SMOOTH); //set the shader to smooth shader
+   lightc();
 }
 
 void keyboard (unsigned char key, int x, int y)
@@ -1655,6 +1682,6 @@ int main(int argc, char **argv)
    xpos = 0; ypos = 0; zpos = 0; xrot = 0; yrot = 0; angle=0.0; cRadius = 10.0f;
 
    glutKeyboardFunc (keyboard);
-
+   myInit();
    glutMainLoop();
 }

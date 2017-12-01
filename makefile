@@ -14,7 +14,7 @@ CFLAGS = $(COMPILERFLAGS) $(INCLUDE)
 LFLAGS = -static -c
 LIBRARIES = -lglut -lGL -lGLU -lm 
 
-main: Chicken.o Environment.o Cow.o UFO.o main.o
+main: main.o
 	$(CC) $(RAYGL) $(INCLUDE) $(INCLUDEGL) $(CFLAGS) -o $@ $(LIBDIR) $(LIBS) $< $(LIBRARIES)  
 
 template: main.o
