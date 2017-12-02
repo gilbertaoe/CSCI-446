@@ -26,47 +26,31 @@ GLfloat LAngle, RAngle;
 
 GLuint texture[6];
 
-GLfloat x, y, z = 0;
+GLfloat xUFO, yUFO, zUFO = 0;
+GLfloat xChicken, yChicken, zChicken = 0;
+GLfloat xCow, yCow, zCow = 0;
+
+
 
 int lastSub = 1;
 int lastAdd = 1;
 
 void head(GLuint texture[])
 {  
-   //Head
-   /*
-   glVertex3f(-0.25, 1, 1.0); 1
-   glVertex3f(0.25, 1, 1.0);  2
-   glVertex3f(0.25, .5, 1.0); 3
-   glVertex3f(-0.25, .5, 1.0);4
-   glVertex3f(-0.25, 1, 1.5); 5
-   glVertex3f(0.25, 1, 1.5);  6
-   glVertex3f(0.25, .5, 1.5); 7
-   glVertex3f(-0.25, .5, 1.5);8
-
-   glTexCoord2d(0.0, 0.0);
-   glTexCoord2d(1.0, 0.0); 
-   glTexCoord2d(1.0, 1.0); 
-   glTexCoord2d(0.0, 1.0); 
-   */
-
    glColor4f(0.0f, 0.0f, 0.0f, 1.0f);
-
-   //texture = LoadTexture( "aaa.ppm", 560, 350);
 
    glBindTexture( GL_TEXTURE_2D, texture[1]);
 
    glBegin(GL_QUADS);
+      glTexCoord2d(0.0, 0.0); glVertex3f(xCow + -0.25,y + 1,z + 1.0);
+      glTexCoord2d(1.0, 0.0); glVertex3f(xCow + 0.25,y + 1,z + 1.0);
+      glTexCoord2d(1.0, 1.0); glVertex3f(xCow + 0.25, y +1,z + 1.5);
+      glTexCoord2d(0.0, 1.0); glVertex3f(xCow + -0.25,y + 1,z + 1.5);
 
-      glTexCoord2d(0.0, 0.0); glVertex3f(x + -0.25,y + 1,z + 1.0);
-      glTexCoord2d(1.0, 0.0); glVertex3f(x + 0.25,y + 1,z + 1.0);
-      glTexCoord2d(1.0, 1.0); glVertex3f(x + 0.25, y +1,z + 1.5);
-      glTexCoord2d(0.0, 1.0); glVertex3f(x + -0.25,y + 1,z + 1.5);
-
-      glTexCoord2d(0.0, 0.0); glVertex3f(x + 0.25,y + 1,z + 1.0);
-      glTexCoord2d(1.0, 0.0); glVertex3f(x + 0.25,y + 1,z + 1.5);
-      glTexCoord2d(1.0, 1.0); glVertex3f(x + 0.25,y + .5,z + 1.5);
-      glTexCoord2d(0.0, 1.0); glVertex3f(x + 0.25,y + .5,z + 1.0);
+      glTexCoord2d(0.0, 0.0); glVertex3f(xCow + 0.25,y + 1,z + 1.0);
+      glTexCoord2d(1.0, 0.0); glVertex3f(xCow + 0.25,y + 1,z + 1.5);
+      glTexCoord2d(1.0, 1.0); glVertex3f(xCow + 0.25,y + .5,z + 1.5);
+      glTexCoord2d(0.0, 1.0); glVertex3f(xCow + 0.25,y + .5,z + 1.0);
 
       glTexCoord2d(0.0, 0.0); glVertex3f(x + 0.25,y + .5,z + 1.0);
       glTexCoord2d(1.0, 0.0); glVertex3f(x + 0.25,y + .5,z + 1.5);
@@ -77,16 +61,7 @@ void head(GLuint texture[])
       glTexCoord2d(1.0, 0.0); glVertex3f(x + -0.25,y + 1,z + 1.5);
       glTexCoord2d(1.0, 1.0); glVertex3f(x + -0.25,y + .5,z + 1.5);
       glTexCoord2d(0.0, 1.0); glVertex3f(x + -0.25,y + .5,z + 1.0);
-
    glEnd();
-
-   //FreeTexture(texture);
-
-   
-   
-
-
-   //texture = LoadTexture( "minecraft_cow.ppm", 65, 64);
 
    glBindTexture( GL_TEXTURE_2D, texture[2]);
 
@@ -98,8 +73,6 @@ void head(GLuint texture[])
       glTexCoord2d(0.0, 1.0); glVertex3f(x + -0.25,y + .5,z + 1.5);
 
    glEnd();
-
-   //FreeTexture(texture);
 
    glColor4f(1.0f, 0.0f, 0.0f, 0.0f);
 }
