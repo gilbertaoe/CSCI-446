@@ -30,8 +30,6 @@ GLfloat xUFO, yUFO, zUFO = 0;
 GLfloat xChicken, yChicken, zChicken = 0;
 GLfloat xCow, yCow, zCow = 0;
 
-
-
 int lastSub = 1;
 int lastAdd = 1;
 
@@ -1196,7 +1194,7 @@ void myInit(void)
 
 void keyboard (unsigned char key, int x, int y)
 {
-    if (key=='q')
+    /*if (key=='q')
     {
       xrot += 1;
       if (xrot >360) xrot -= 360;
@@ -1242,42 +1240,7 @@ void keyboard (unsigned char key, int x, int y)
       yrotrad = (yrot / 180 * 3.141592654f);
       xpos -= float(cos(yrotrad)) * 0.2;
       zpos -= float(sin(yrotrad)) * 0.2;
-    }
-
-    if (key=='p')
-    {
-      cout << "XPOS: " << xpos << " YPOS: " << ypos << " ZPOS: " << zpos << endl;
-    }
-
-    if (key=='b' && start == 0)
-    {
-      start++;
-      cout << start << endl;
-    }
-
-    else if (key=='b' && start == 1)
-    {
-      start -= 1;
-      cout << start << endl;
-    }
-
-    if (key=='n' && forward == 0)
-    {
-      forward++;
-      cout << forward << endl;
-    }
-
-    else if (key=='n' && forward == 1)
-    {
-      forward -= 1;
-      cout << forward << endl;
-    }
-
-    if (key=='u')
-    {
-      rotating = 1;
-    }
-
+    }*/
     if (key==27)
     {
       exit(0);
@@ -1286,34 +1249,29 @@ void keyboard (unsigned char key, int x, int y)
 
 void mouseClicks(int button, int state, int x, int y)
 {
-    if(button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
-    { 
-
-      cout << x << " " << y << " " << button << endl;
+   if(button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
+   { 
       if(x > 50 && x < 100 && y > 50 && y < 100 && start == 0)
       {
-          start = 1;
-          return;
+         start = 1;
+         return;
       }
-
       else if(x > 50 && x < 100 && y > 50 && y < 100 && start == 1)
       {
-          start = 0;
-          return;
+         start = 0;
+         return;
       }
-
       if(x > 150 && x < 200 && y > 150 && y < 200 && forward == 0)
       {
-          forward = 1;
-          return;
+         forward = 1;
+         return;
       }
-
       else if(x > 150 && x < 200 && y > 150 && y < 200 && forward == 1)
       {
-          forward = 0;
-          return;
+         forward = 0;
+         return;
       }
-    }
+   }
 }
 
 void myReshape (int w, int h)
