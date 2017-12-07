@@ -13,7 +13,7 @@
 #include <math.h>
 #include <stdio.h>
 #include "./raygl.h"
-#include "./raygldefs.h"
+//#include "./raygldefs.h"
 
 float xpos, ypos, zpos, xrot, yrot, zrot, angle;
 float lastx, lasty;
