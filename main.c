@@ -452,7 +452,7 @@ void rWing()
 
 void drawChicken(GLuint texture[])
 {
-
+   glEnable(GL_TEXTURE_2D);
    glBindTexture(GL_TEXTURE_2D, texture[0]);
    //The body
    glBegin(GL_QUADS);
@@ -598,6 +598,7 @@ void drawChicken(GLuint texture[])
 
    //Right leg
    glBegin(GL_QUADS);
+      glColor3f(1.0f, 1.0f, 0.0f);
       glVertex3f(xChicken + 0.66f, yChicken + -2.0f, zChicken + -0.33f);
       glVertex3f(xChicken + 0.33f, yChicken + -2.0f, zChicken + -0.33f);
       glVertex3f(xChicken + 0.33f, yChicken + -2.0f, zChicken + 0.33f);
@@ -657,7 +658,18 @@ void drawChicken(GLuint texture[])
 
 void drawUFO()
 {
+   glDisable(GL_TEXTURE_2D);
    glColor3f(0.0f, 1.0f, 0.0f);
+   for(int i = 0; i < 360; i++)
+   {
+      glBegin(GL_LINES);
+         glVertex3f(xUFO + sin(i), yUFO + -2.0f, zUFO + cos(i));
+         glVertex3f(xUFO + sin(i), yUFO + -10.0f, zUFO + cos(i));
+      glEnd();
+   }
+
+   glRotatef(angle,0.0,1.0,0.0);
+
    glBegin(GL_TRIANGLE_FAN);
       glVertex3f(xUFO + 0, yUFO + 2, zUFO + 0);
       for (int angle2 = 0; angle2 < 360; angle2++)
@@ -666,6 +678,10 @@ void drawUFO()
          glVertex3f(xUFO + sin(angle2) * 10, yUFO + 0, zUFO + cos(angle2) * 10);
       }
    glEnd();
+
+   glRotatef(-angle,0.0,1.0,0.0);
+
+   glRotatef(-angle,0.0,1.0,0.0);
 
    glColor3f(1.0f, 0.0f, 0.0f);
    glBegin(GL_TRIANGLE_FAN);
@@ -677,10 +693,71 @@ void drawUFO()
       }
    glEnd();
 
+   glRotatef(angle,0.0,1.0,0.0);
+
+
+   //landing gear
+   glTranslatef(xUFO + -6.5f, yUFO + -3.0f, zUFO + -6.5f);
+   glColor3f(0.0f, 0.0f, 1.0f);
+   glutSolidSphere(0.3f, 50.0f, 50.0f);
+   glTranslatef(-xUFO + 6.5f, -yUFO + 3.0f, -zUFO + 6.5f);
+
+   glBegin(GL_TRIANGLE_FAN);
+      glVertex3f(xUFO + -6.5, yUFO + -3, zUFO + -6.5);
+      for (int angle2 = 0; angle2 < 360; angle2++)
+      {
+         glColor3f(1.0f, 1.0f, 1.0f);
+         glVertex3f(xUFO + sin(angle2) * 2, yUFO + 0, zUFO + cos(angle2) * 2);
+      }
+   glEnd();
+
+   glTranslatef(xUFO + -6.5f, yUFO + -3.0f, zUFO + 6.5f);
+   glColor3f(0.0f, 0.0f, 1.0f);
+   glutSolidSphere(0.3f, 50.0f, 50.0f);
+   glTranslatef(-xUFO + 6.5f, -yUFO + 3.0f, -zUFO + -6.5f);
+
+   glBegin(GL_TRIANGLE_FAN);
+      glVertex3f(xUFO + -6.5, yUFO + -3, zUFO + 6.5);
+      for (int angle2 = 0; angle2 < 360; angle2++)
+      {
+         glColor3f(1.0f, 1.0f, 1.0f);
+         glVertex3f(xUFO + sin(angle2) * 2, yUFO + 0, zUFO + cos(angle2) * 2);
+      }
+   glEnd();
+
+   glTranslatef(xUFO + 6.5f, yUFO + -3.0f, zUFO + 6.5f);
+   glColor3f(0.0f, 0.0f, 1.0f);
+   glutSolidSphere(0.3f, 50.0f, 50.0f);
+   glTranslatef(-xUFO + -6.5f, -yUFO + 3.0f, -zUFO + -6.5f);
+
+   glBegin(GL_TRIANGLE_FAN);
+      glVertex3f(xUFO + 6.5, yUFO + -3, zUFO + 6.5);
+      for (int angle2 = 0; angle2 < 360; angle2++)
+      {
+         glColor3f(1.0f, 1.0f, 1.0f);
+         glVertex3f(xUFO + sin(angle2) * 2, yUFO + 0, zUFO + cos(angle2) * 2);
+      }
+   glEnd();
+
+   glTranslatef(xUFO + 6.5f, yUFO + -3.0f, zUFO + -6.5f);
+   glColor3f(0.0f, 0.0f, 1.0f);
+   glutSolidSphere(0.3f, 50.0f, 50.0f);
+   glTranslatef(-xUFO + -6.5f, -yUFO + 3.0f, -zUFO + 6.5f);
+
+   glBegin(GL_TRIANGLE_FAN);
+      glVertex3f(xUFO + 6.5, yUFO + -3, zUFO + -6.5);
+      for (int angle2 = 0; angle2 < 360; angle2++)
+      {
+         glColor3f(1.0f, 1.0f, 1.0f);
+         glVertex3f(xUFO + sin(angle2) * 2, yUFO + 0, zUFO + cos(angle2) * 2);
+      }
+   glEnd();
+
    glTranslatef(xUFO + 0.0f, yUFO + 1.5f, zUFO + 0.0f);
    glColor3f(0.0f, 0.0f, 1.0f);
    glutSolidSphere(1.0f, 50.0f, 50.0f);
    glTranslatef(-xUFO + 0.0f, -yUFO + 1.5f, -zUFO + 0.0f);
+
 }
 
 void drawPost() 
@@ -911,6 +988,7 @@ void drawFarm(GLuint texture[])
    glEnd();
    glLineWidth(1);
 
+   glEnable(GL_TEXTURE_2D);
    glBindTexture(GL_TEXTURE_2D, texture[4]);
    glColor3f(0.80f, 0.0f, 0.0f);
    glBegin(GL_QUADS);
@@ -1086,7 +1164,7 @@ void lightc()
 
    // Ambient "light source".
    GLfloat ambient[] = {0.4f, 1.0f, 1.0f, 1.0f};
-   GLfloat ambient_intensity[] = {0.4f, 0.4f, 0.4f, 1.0f};
+   GLfloat ambient_intensity[] = {0.2f, 0.2f, 0.2f, 1.0f};
    glColorMaterial(GL_FRONT, GL_AMBIENT);
    glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambient_intensity);
    glLightfv(GL_LIGHT0, GL_AMBIENT, ambient);
@@ -1289,7 +1367,7 @@ int main(int argc, char **argv)
    glutInitDisplayMode (GLUT_DOUBLE | GLUT_DEPTH);
    glutInitWindowSize(1000, 800);
    glutInitWindowPosition(200, 200);
-   glutCreateWindow("HW 2");
+   glutCreateWindow("FINAL");
    glutDisplayFunc (myDisplay);
    glutIdleFunc (myDisplay);
    glutReshapeFunc (myReshape);
