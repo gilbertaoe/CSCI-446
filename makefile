@@ -24,6 +24,7 @@ raygl:
 	$(CC) raygl.cpp $(LFLAGS) $(INCLUDE) $(INCLUDEGL) $(CFLAGS) -o $@ $(LIBDIR) $(LIBS) $< $(LIBRARIES)  
 
 clean:
+	rm main
 	rm *.pov
 	rm *.png
-	rm main
+

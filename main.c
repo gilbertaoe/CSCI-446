@@ -12,13 +12,34 @@
 #include <GL/freeglut.h>
 #include <math.h>
 #include <stdio.h>
+#include <unistd.h>
 #include "./raygl.h"
 //#include "./raygldefs.h"
 
-float xpos, ypos, zpos, xrot, yrot, zrot, angle;
+float xpos, ypos, zpos, xrot, yrot, zrot, angle5;
 float lastx, lasty;
 float cRadius; // our radius distance from our character
 int rotating = 0;
+
+int cowHeadMove = 0;
+float cowHeadAngle = 0.0f;
+int chickenAnimation = 0;
+int ufoBeam = 0;
+int egg = 0;
+int abducted = 0;
+float frontLegsRotate = 0;
+float backLegsRotate = 0;
+int isWalking = 0;
+int phase = 1;
+double angle, angle2 = 0;
+double angle3, angle4 = 0;
+double UFOAngle = 0;
+
+int moviePhase1 = 0;
+int moviePhase2 = 0;
+
+float timer = 0.0;
+float tempTimer = 0.0;
 
 bool start = 0;
 bool forward = 0;
@@ -143,7 +164,7 @@ void head(GLuint texture[])
    glColor4f(1.0f, 0.0f, 0.0f, 0.0f);
 }
 
-void backLeftLegTop(GLuint texture[])
+void backLeftLegTop()
 {
    glTranslatef(xCow + 0.9f, yCow + -1.4f, zCow + -1.9f);
    glutSolidSphere(0.125f, 50.0f, 50.0f);
@@ -169,7 +190,7 @@ void backLeftLegTop(GLuint texture[])
    glEnd();
 }
 
-void backRightLegTop(GLuint texture[])
+void backRightLegTop()
 {
    glTranslatef(xCow + -0.9f, yCow + -1.4f, zCow + -1.9f);
    glutSolidSphere(0.125f, 50.0f, 50.0f);
@@ -195,7 +216,7 @@ void backRightLegTop(GLuint texture[])
    glEnd();
 }
 
-void backLeftLegBot(GLuint texture[])
+void backLeftLegBot()
 {
    glBegin(GL_QUADS);
       glVertex3f(xCow + 0.8, yCow + -1.4, zCow + -1.8);
@@ -217,7 +238,7 @@ void backLeftLegBot(GLuint texture[])
    glEnd();
 } 
 
-void backRightLegBot(GLuint texture[])
+void backRightLegBot()
 {
    glBegin(GL_QUADS);
       glVertex3f(xCow + -1.0, yCow + -1.4, zCow + -1.8);
@@ -239,7 +260,7 @@ void backRightLegBot(GLuint texture[])
    glEnd();
 } 
 
-void frontLeftLegBot(GLuint texture[])
+void frontLeftLegBot()
 {
    glBegin(GL_QUADS);
       glVertex3f(xCow + 0.8, yCow + -1.4, zCow + 1.0);
@@ -261,7 +282,7 @@ void frontLeftLegBot(GLuint texture[])
    glEnd();
 }
 
-void frontRightLegBot(GLuint texture[])
+void frontRightLegBot()
 {
    glBegin(GL_QUADS);
       glVertex3f(xCow + -1.0, yCow + -1.4, zCow + 1.0);
@@ -283,7 +304,7 @@ void frontRightLegBot(GLuint texture[])
    glEnd();
 }
 
-void frontLeftLegTop(GLuint texture[])
+void frontLeftLegTop()
 {
    glTranslatef(xCow + 0.9f, yCow + -1.4f, zCow + 0.9f);
    glutSolidSphere(0.125f, 50.0f, 50.0f);
@@ -309,7 +330,7 @@ void frontLeftLegTop(GLuint texture[])
    glEnd();
 }
 
-void frontRightLegTop(GLuint texture[])
+void frontRightLegTop()
 {
 
    glTranslatef(xCow + -0.9f, yCow + -1.4f, zCow + 0.9f);
@@ -390,20 +411,750 @@ void body(GLuint texture[])
 
 void drawCow(GLuint texture[])
 {
-   glTranslatef(xCow + 1.0, yCow + 1.0, zCow + 0.0);
+   glTranslatef(xCow, yCow, zCow);
 
-   head(texture);
+   if(cowHeadMove == 1)
+   {
+      if(cowHeadAngle > -45)
+      {
+         glTranslatef(xCow + -0.25, yCow + 0.5, zCow + 1.0);
+         glRotatef(cowHeadAngle,-1.0,0.0,0.0);
+         glTranslatef(-xCow + 0.25, -yCow + -0.5, -zCow + -1.0);
+         head(texture);
+         glTranslatef(xCow + -0.25, yCow + 0.5, zCow + 1.0);
+         glRotatef(-cowHeadAngle,-1.0,0.0,0.0);
+         glTranslatef(-xCow + 0.25, -yCow + -0.5, -zCow + -1.0);
+         cowHeadAngle--;
+      }
+      else
+      {
+         glTranslatef(xCow + -0.25, yCow + 0.5, zCow + 1.0);
+         glRotatef(cowHeadAngle,-1.0,0.0,0.0);
+         glTranslatef(-xCow + 0.25, -yCow + -0.5, -zCow + -1.0);
+         head(texture);
+         glTranslatef(xCow + -0.25, yCow + 0.5, zCow + 1.0);
+         glRotatef(-cowHeadAngle,-1.0,0.0,0.0);
+         glTranslatef(-xCow + 0.25, -yCow + -0.5, -zCow + -1.0);
+         cowHeadAngle++;
+      }
+   }
+   else
+   {
+      head(texture);
+   }
+
+
    body(texture);
-   frontRightLegTop(texture);
+
+   /*frontRightLegTop(texture);
    frontLeftLegTop(texture);
    frontRightLegBot(texture);
    frontLeftLegBot(texture);
    backLeftLegTop(texture);         
    backRightLegTop(texture);
    backRightLegBot(texture);
-   backLeftLegBot(texture);
+   backLeftLegBot(texture);*/
 
-   glTranslatef(-xCow + 1.0, -yCow + 1.0, -zCow + 0.0);
+   
+   if(angle == -36 && phase == 1)
+   {
+      phase = 2;
+   }
+
+   if(angle2 == -36 && phase == 2)
+   {
+      phase = 3;
+   }
+
+   if (angle3 == 0 && phase == 3)
+   {
+      phase = 4;
+   }
+
+   if (angle == 0 && phase == 4)
+   {
+      phase = 5;
+   }
+
+   if (angle == -36 && phase == 5)
+   {
+      phase = 6;
+   }
+   if (angle2 == -36 && phase == 6)
+   {
+      phase = 3;
+   }
+
+   if (isWalking == 1 && phase <= 6)
+   {
+      if(phase == 1)
+      {
+         glTranslatef(xCow + 0.8f, yCow + -1.0f, zCow + 0.8f); // point is closest to the origin
+         glRotatef(angle, 1.0f, 0.0f, 0.0f);// pos angle + BS
+         glTranslatef(-xCow + -0.8f, -yCow + 1.0f,-zCow + -0.8f);//inverse
+         frontRightLegTop();
+         glTranslatef(xCow + 0.8f,yCow +  -1.0f, zCow + 0.8f);//same
+         glRotatef(-angle, 1.0f, 0.0f, 0.0f);// neg angle + BS
+         glTranslatef(-xCow + -0.8f,-yCow +  1.0f, -zCow + -0.8f);//same
+
+         glTranslatef(xCow + 0.8f, yCow + -1.0f, zCow + 0.8f);
+         glRotatef(angle, 1.0f, 0.0f, 0.0f);
+         glTranslatef(-xCow + -0.8f, -yCow + 1.0f, -zCow + -0.8f);
+         frontLeftLegTop();
+         glTranslatef(xCow + 0.8f, yCow + -1.0f,zCow +  0.8f);
+         glRotatef(-angle, 1.0f, 0.0f, 0.0f);
+         glTranslatef(-xCow + -0.8f, -yCow + 1.0f, -zCow + -0.8f);
+         angle -= 4;
+
+         glTranslatef(xCow + 0.8f, yCow + -1.0f,zCow +  0.8f); //this tri is exactly as it's corrosponding top
+         glRotatef(angle, 1.0f, 0.0f, 0.0f);
+         glTranslatef(-xCow + -0.8f, -yCow + 1.0f, -zCow + -0.8f);
+            glTranslatef(xCow + 0.8f, yCow + -1.4f,zCow +  0.8f); //point on the actual bot portion closest to origin
+            glRotatef(angle3, 1.0f, 0.0f, 0.0f);
+            glTranslatef(-xCow + -0.8f,-yCow +  1.4f,-zCow +  -0.8f);//inverse
+               frontRightLegBot();
+            glTranslatef(xCow + 0.8f,yCow +  -1.4f, zCow + 0.8f); //same.1
+            glRotatef(-angle3, 1.0f, 0.0f, 0.0f);
+            glTranslatef(-xCow + -0.8f, -yCow + 1.4f,-zCow +  -0.8f);//same.1
+         glTranslatef(xCow + 0.8f,yCow +  -1.0f, zCow + 0.8f);//same
+         glRotatef(-angle, 1.0f, 0.0f, 0.0f);
+         glTranslatef(-xCow + -0.8f, -yCow + 1.0f, -zCow + -0.8f);//same
+
+         glTranslatef(xCow + 0.8f,yCow +  -1.0f, zCow + 0.8f);
+         glRotatef(angle, 1.0f, 0.0f, 0.0f);
+         glTranslatef(-xCow + -0.8f, -yCow + 1.0f, -zCow + -0.8f);
+            glTranslatef(xCow + 0.8f,yCow +  -1.4f,zCow +  0.8f);
+            glRotatef(angle3, 1.0f, 0.0f, 0.0f);
+            glTranslatef(-xCow + -0.8f,-yCow +  1.4f, -zCow + -0.8f);
+               frontLeftLegBot();
+            glTranslatef(xCow + 0.8f, yCow + -1.4f, zCow + 0.8f);
+            glRotatef(-angle3, 1.0f, 0.0f, 0.0f);
+            glTranslatef(-xCow + -0.8f,-yCow + 1.4f,-zCow +  -0.8f);
+         glTranslatef(xCow + 0.8f,yCow +  -1.0f, zCow + 0.8f);
+         glRotatef(-angle, 1.0f, 0.0f, 0.0f);
+         glTranslatef(-xCow + -0.8f,-yCow +  1.0f, -zCow + -0.8f);
+         angle3 += 4;
+
+         glTranslatef(xCow + 0.8f, yCow + -1.0f, zCow + -1.8f);
+         glRotatef(angle2, 1.0f, 0.0f, 0.0f);
+         glTranslatef(-xCow + -0.8f, -yCow + 1.0f, -zCow + 1.8f);
+         backLeftLegTop();         
+         glTranslatef(xCow + 0.8f,yCow +  -1.0f,zCow +  -1.8f);
+         glRotatef(-angle2, 1.0f, 0.0f, 0.0f);
+         glTranslatef(-xCow + -0.8f,-yCow +  1.0f, -zCow + 1.8f);
+
+         glTranslatef(xCow + -0.8f, yCow + -1.0f, zCow + -1.8f);
+         glRotatef(angle2, 1.0f, 0.0f, 0.0f);
+         glTranslatef(-xCow + 0.8f, -yCow + 1.0f, -zCow + 1.8f);
+         backRightLegTop();
+         glTranslatef(xCow + -0.8f, yCow + -1.0f,zCow +  -1.8f);
+         glRotatef(-angle2, 1.0f, 0.0f, 0.0f);
+         glTranslatef(-xCow + 0.8f,-yCow +  1.0f, -zCow + 1.8f);
+         //angle2--;
+
+         glTranslatef(xCow + -0.8f,yCow +  -1.0f, zCow + -1.8f);
+         glRotatef(angle2, 1.0f, 0.0f, 0.0f);
+         glTranslatef(-xCow + 0.8f, -yCow + 1.0f,-zCow +  1.8f);
+            glTranslatef(xCow + -0.8f, yCow + -1.4f, zCow + -1.8f);
+            glRotatef(angle4, 1.0f, 0.0f, 0.0f);
+            glTranslatef(-xCow + 0.8f, -yCow + 1.4f,-zCow +  1.8f);
+               backRightLegBot();
+            glTranslatef(xCow + -0.8f,yCow +  -1.4f, zCow + -1.8f);
+            glRotatef(-angle4, 1.0f, 0.0f, 0.0f);
+            glTranslatef(-xCow + 0.8f, -yCow + 1.4f, -zCow + 1.8f);
+         glTranslatef(xCow + -0.8f, yCow + -1.0f, zCow + -1.8f);
+         glRotatef(-angle2, 1.0f, 0.0f, 0.0f);
+         glTranslatef(-xCow + 0.8f,-yCow +  1.0f, -zCow + 1.8f);
+
+         glTranslatef(xCow + 0.8f, yCow + -1.0f,zCow +  -1.8f);
+         glRotatef(angle2, 1.0f, 0.0f, 0.0f);
+         glTranslatef(-xCow + -0.8f,-yCow +  1.0f, -zCow + 1.8f);
+            glTranslatef(xCow + 0.8f,yCow +  -1.4f,zCow +  -1.8f);
+            glRotatef(angle4, 1.0f, 0.0f, 0.0f);
+            glTranslatef(-xCow + -0.8f,-yCow +  1.4f,- zCow + 1.8f);
+               backLeftLegBot();
+            glTranslatef(xCow + 0.8f, yCow + -1.4f,zCow +  -1.8f);
+            glRotatef(-angle4, 1.0f, 0.0f, 0.0f);
+            glTranslatef(-xCow + -0.8f,-yCow +  1.4f,-zCow +  1.8f);
+         glTranslatef(xCow + 0.8f, yCow + -1.0f, zCow + -1.8f);
+         glRotatef(-angle2, 1.0f, 0.0f, 0.0f);
+         glTranslatef(-xCow + -0.8f,-yCow +  1.0f,-zCow +  1.8f);
+         //angle4++;
+      }
+      if(phase == 2)
+      {
+         glTranslatef(xCow + 0.8f, yCow + -1.0f, zCow + 0.8f); // point is closest to the origin
+         glRotatef(angle, 1.0f, 0.0f, 0.0f);// pos angle + BS
+         glTranslatef(-xCow+-0.8f, -yCow+1.0f,-zCow+-0.8f);//inverse
+         frontRightLegTop();
+         glTranslatef(xCow + 0.8f, yCow + -1.0f, zCow + 0.8f);//same
+         glRotatef(-angle, 1.0f, 0.0f, 0.0f);// neg angle + BS
+         glTranslatef(-xCow+-0.8f, -yCow+1.0f,-zCow+-0.8f);//same
+
+         glTranslatef(xCow + 0.8f, yCow + -1.0f, zCow + 0.8f);
+         glRotatef(angle, 1.0f, 0.0f, 0.0f);
+         glTranslatef(-xCow+-0.8f, -yCow+1.0f,-zCow+-0.8f);
+         frontLeftLegTop();
+         glTranslatef(xCow + 0.8f, yCow + -1.0f, zCow + 0.8f);
+         glRotatef(-angle, 1.0f, 0.0f, 0.0f);
+         glTranslatef(-xCow+-0.8f, -yCow+1.0f,-zCow+-0.8f);
+         //angle--;
+
+         glTranslatef(xCow + 0.8f, yCow + -1.0f, zCow + 0.8f); //this tri is exactly as it's corrosponding top
+         glRotatef(angle, 1.0f, 0.0f, 0.0f);
+         glTranslatef(-xCow+-0.8f, -yCow+1.0f,-zCow+-0.8f);
+            glTranslatef(xCow+0.8f,yCow+ -1.4f,zCow+ 0.8f); //point on the actual bot portion closest to origin
+            glRotatef(angle3, 1.0f, 0.0f, 0.0f);
+            glTranslatef(-xCow+-0.8f,-yCow+ 1.4f, -zCow+-0.8f);//inverse
+               frontRightLegBot();
+            glTranslatef(xCow+0.8f,yCow+ -1.4f,zCow+ 0.8f); //same.1
+            glRotatef(-angle3, 1.0f, 0.0f, 0.0f);
+            glTranslatef(-xCow+-0.8f,-yCow+ 1.4f, -zCow+-0.8f);//same.1
+         glTranslatef(xCow + 0.8f, yCow + -1.0f, zCow + 0.8f);//same
+         glRotatef(-angle, 1.0f, 0.0f, 0.0f);
+         glTranslatef(-xCow+-0.8f, -yCow+1.0f,-zCow+-0.8f);//same
+
+         glTranslatef(xCow + 0.8f, yCow + -1.0f, zCow + 0.8f);
+         glRotatef(angle, 1.0f, 0.0f, 0.0f);
+         glTranslatef(-xCow+-0.8f, -yCow+1.0f,-zCow+-0.8f);
+            glTranslatef(xCow+0.8f,yCow+ -1.4f,zCow+ 0.8f);
+            glRotatef(angle3, 1.0f, 0.0f, 0.0f);
+            glTranslatef(-xCow+-0.8f,-yCow+ 1.4f, -zCow+-0.8f);
+               frontLeftLegBot();
+            glTranslatef(xCow+0.8f,yCow+ -1.4f,zCow+ 0.8f);
+            glRotatef(-angle3, 1.0f, 0.0f, 0.0f);
+            glTranslatef(-xCow+-0.8f,-yCow+ 1.4f, -zCow+-0.8f);
+         glTranslatef(xCow + 0.8f, yCow + -1.0f, zCow + 0.8f);
+         glRotatef(-angle, 1.0f, 0.0f, 0.0f);
+         glTranslatef(-xCow+-0.8f, -yCow+1.0f,-zCow+-0.8f);
+         angle3 += 4;
+
+         glTranslatef(xCow+0.8f, yCow+-1.0f, zCow+-1.8f);
+         glRotatef(angle2, 1.0f, 0.0f, 0.0f);
+         glTranslatef(-xCow+-0.8f, -yCow+1.0f, -zCow+1.8f);
+         backLeftLegTop();         
+         glTranslatef(xCow+0.8f, yCow+-1.0f, zCow+-1.8f);
+         glRotatef(-angle2, 1.0f, 0.0f, 0.0f);
+         glTranslatef(-xCow+-0.8f, -yCow+1.0f, -zCow+1.8f);
+
+         glTranslatef(xCow+-0.8f,yCow+ -1.0f,zCow+ -1.8f);
+         glRotatef(angle2, 1.0f, 0.0f, 0.0f);
+         glTranslatef(-xCow+0.8f,-yCow+ 1.0f,-zCow+ 1.8f);
+         backRightLegTop();
+         glTranslatef(xCow+-0.8f,yCow+ -1.0f,zCow+ -1.8f);
+         glRotatef(-angle2, 1.0f, 0.0f, 0.0f);
+         glTranslatef(-xCow+0.8f,-yCow+ 1.0f,-zCow+ 1.8f);
+         angle2 -= 4;
+
+         glTranslatef(xCow+-0.8f,yCow+ -1.0f,zCow+ -1.8f);
+         glRotatef(angle2, 1.0f, 0.0f, 0.0f);
+         glTranslatef(-xCow+0.8f,-yCow+ 1.0f,-zCow+ 1.8f);
+            glTranslatef(xCow+-0.8f,yCow+ -1.4f,zCow+ -1.8f);
+            glRotatef(angle4, 1.0f, 0.0f, 0.0f);
+            glTranslatef(-xCow+0.8f, -yCow+1.4f, -zCow+1.8f);
+               backRightLegBot();
+            glTranslatef(xCow+-0.8f,yCow+ -1.4f,zCow+ -1.8f);
+            glRotatef(-angle4, 1.0f, 0.0f, 0.0f);
+            glTranslatef(-xCow+0.8f, -yCow+1.4f, -zCow+1.8f);
+         glTranslatef(xCow+-0.8f,yCow+ -1.0f,zCow+ -1.8f);
+         glRotatef(-angle2, 1.0f, 0.0f, 0.0f);
+         glTranslatef(-xCow+0.8f,-yCow+ 1.0f,-zCow+ 1.8f);
+
+         glTranslatef(xCow+0.8f, yCow+-1.0f, zCow+-1.8f);
+         glRotatef(angle2, 1.0f, 0.0f, 0.0f);
+         glTranslatef(-xCow+-0.8f, -yCow+1.0f, -zCow+1.8f);
+            glTranslatef(xCow+0.8f,yCow+ -1.4f,zCow+ -1.8f);
+            glRotatef(angle4, 1.0f, 0.0f, 0.0f);
+            glTranslatef(-xCow+-0.8f, -yCow+1.4f, -zCow+1.8f);
+               backLeftLegBot();
+            glTranslatef(xCow+0.8f,yCow+ -1.4f,zCow+ -1.8f);
+            glRotatef(-angle4, 1.0f, 0.0f, 0.0f);
+            glTranslatef(-xCow+-0.8f, -yCow+1.4f, -zCow+1.8f);
+         glTranslatef(xCow+0.8f, yCow+-1.0f, zCow+-1.8f);
+         glRotatef(-angle2, 1.0f, 0.0f, 0.0f);
+         glTranslatef(-xCow+-0.8f, -yCow+1.0f, -zCow+1.8f);
+         angle4 += 4;
+      }
+      if(phase == 3)
+      {
+         glTranslatef(xCow + 0.8f, yCow + -1.0f, zCow + 0.8f); // point is closest to the origin
+         glRotatef(angle, 1.0f, 0.0f, 0.0f);// pos angle + BS
+         glTranslatef(-xCow+-0.8f, -yCow+1.0f,-zCow+-0.8f);//inverse
+         frontRightLegTop();
+         glTranslatef(xCow + 0.8f, yCow + -1.0f, zCow + 0.8f);//same
+         glRotatef(-angle, 1.0f, 0.0f, 0.0f);// neg angle + BS
+         glTranslatef(-xCow+-0.8f, -yCow+1.0f,-zCow+-0.8f);//same
+
+         glTranslatef(xCow + 0.8f, yCow + -1.0f, zCow + 0.8f);
+         glRotatef(angle, 1.0f, 0.0f, 0.0f);
+         glTranslatef(-xCow+-0.8f, -yCow+1.0f,-zCow+-0.8f);
+         frontLeftLegTop();
+         glTranslatef(xCow + 0.8f, yCow + -1.0f, zCow + 0.8f);
+         glRotatef(-angle, 1.0f, 0.0f, 0.0f);
+         glTranslatef(-xCow+-0.8f, -yCow+1.0f,-zCow+-0.8f);
+         //angle++;
+
+         glTranslatef(xCow + 0.8f, yCow + -1.0f, zCow + 0.8f); //this tri is exactly as it's corrosponding top
+         glRotatef(angle, 1.0f, 0.0f, 0.0f);
+         glTranslatef(-xCow+-0.8f, -yCow+1.0f,-zCow+-0.8f);
+            glTranslatef(xCow+0.8f,yCow+ -1.4f,zCow+ 0.8f); //point on the actual bot portion closest to origin
+            glRotatef(angle3, 1.0f, 0.0f, 0.0f);
+            glTranslatef(-xCow+-0.8f,-yCow+ 1.4f, -zCow+-0.8f);//inverse
+               frontRightLegBot();
+            glTranslatef(xCow+0.8f,yCow+ -1.4f,zCow+ 0.8f); //same.1
+            glRotatef(-angle3, 1.0f, 0.0f, 0.0f);
+            glTranslatef(-xCow+-0.8f,-yCow+ 1.4f, -zCow+-0.8f);//same.1
+         glTranslatef(xCow + 0.8f, yCow + -1.0f, zCow + 0.8f);//same
+         glRotatef(-angle, 1.0f, 0.0f, 0.0f);
+         glTranslatef(-xCow+-0.8f, -yCow+1.0f,-zCow+-0.8f);//same
+
+         glTranslatef(xCow + 0.8f, yCow + -1.0f, zCow + 0.8f);
+         glRotatef(angle, 1.0f, 0.0f, 0.0f);
+         glTranslatef(-xCow+-0.8f, -yCow+1.0f,-zCow+-0.8f);
+            glTranslatef(xCow+0.8f,yCow+ -1.4f,zCow+ 0.8f);
+            glRotatef(angle3, 1.0f, 0.0f, 0.0f);
+            glTranslatef(-xCow+-0.8f,-yCow+ 1.4f, -zCow+-0.8f);
+               frontLeftLegBot();
+            glTranslatef(xCow+0.8f,yCow+ -1.4f,zCow+ 0.8f);
+            glRotatef(-angle3, 1.0f, 0.0f, 0.0f);
+            glTranslatef(-xCow+-0.8f,-yCow+ 1.4f, -zCow+-0.8f);
+         glTranslatef(xCow + 0.8f, yCow + -1.0f, zCow + 0.8f);
+         glRotatef(-angle, 1.0f, 0.0f, 0.0f);
+         glTranslatef(-xCow+-0.8f, -yCow+1.0f,-zCow+-0.8f);
+         angle3 -= 4;
+
+         glTranslatef(xCow+0.8f, yCow+-1.0f, zCow+-1.8f);
+         glRotatef(angle2, 1.0f, 0.0f, 0.0f);
+         glTranslatef(-xCow+-0.8f, -yCow+1.0f, -zCow+1.8f);
+         backLeftLegTop();         
+         glTranslatef(xCow+0.8f, yCow+-1.0f, zCow+-1.8f);
+         glRotatef(-angle2, 1.0f, 0.0f, 0.0f);
+         glTranslatef(-xCow+-0.8f, -yCow+1.0f, -zCow+1.8f);
+
+         glTranslatef(xCow+-0.8f,yCow+ -1.0f,zCow+ -1.8f);
+         glRotatef(angle2, 1.0f, 0.0f, 0.0f);
+         glTranslatef(-xCow+0.8f,-yCow+ 1.0f,-zCow+ 1.8f);
+         backRightLegTop();
+         glTranslatef(xCow+-0.8f,yCow+ -1.0f,zCow+ -1.8f);
+         glRotatef(-angle2, 1.0f, 0.0f, 0.0f);
+         glTranslatef(-xCow+0.8f,-yCow+ 1.0f,-zCow+ 1.8f);
+         //angle2--;
+
+         glTranslatef(xCow+-0.8f,yCow+ -1.0f,zCow+ -1.8f);
+         glRotatef(angle2, 1.0f, 0.0f, 0.0f);
+         glTranslatef(-xCow+0.8f,-yCow+ 1.0f,-zCow+ 1.8f);
+            glTranslatef(xCow+-0.8f,yCow+ -1.4f,zCow+ -1.8f);
+            glRotatef(angle4, 1.0f, 0.0f, 0.0f);
+            glTranslatef(-xCow+0.8f, -yCow+1.4f, -zCow+1.8f);
+               backRightLegBot();
+            glTranslatef(xCow+-0.8f,yCow+ -1.4f,zCow+ -1.8f);
+            glRotatef(-angle4, 1.0f, 0.0f, 0.0f);
+            glTranslatef(-xCow+0.8f, -yCow+1.4f, -zCow+1.8f);
+         glTranslatef(xCow+-0.8f,yCow+ -1.0f,zCow+ -1.8f);
+         glRotatef(-angle2, 1.0f, 0.0f, 0.0f);
+         glTranslatef(-xCow+0.8f,-yCow+ 1.0f,-zCow+ 1.8f);
+
+         glTranslatef(xCow+0.8f, yCow+-1.0f, zCow+-1.8f);
+         glRotatef(angle2, 1.0f, 0.0f, 0.0f);
+         glTranslatef(-xCow+-0.8f, -yCow+1.0f, -zCow+1.8f);
+            glTranslatef(xCow+0.8f,yCow+ -1.4f,zCow+ -1.8f);
+            glRotatef(angle4, 1.0f, 0.0f, 0.0f);
+            glTranslatef(-xCow+-0.8f, -yCow+1.4f, -zCow+1.8f);
+               backLeftLegBot();
+            glTranslatef(xCow+0.8f,yCow+ -1.4f,zCow+ -1.8f);
+            glRotatef(-angle4, 1.0f, 0.0f, 0.0f);
+            glTranslatef(-xCow+-0.8f, -yCow+1.4f, -zCow+1.8f);
+         glTranslatef(xCow+0.8f, yCow+-1.0f, zCow+-1.8f);
+         glRotatef(-angle2, 1.0f, 0.0f, 0.0f);
+         glTranslatef(-xCow+-0.8f, -yCow+1.0f, -zCow+1.8f);
+         //angle4++;
+      }
+      if(phase == 4)
+      {
+         glTranslatef(xCow + 0.8f, yCow + -1.0f, zCow + 0.8f); // point is closest to the origin
+         glRotatef(angle, 1.0f, 0.0f, 0.0f);// pos angle + BS
+         glTranslatef(-xCow+-0.8f, -yCow+1.0f,-zCow+-0.8f);//inverse
+         frontRightLegTop();
+         glTranslatef(xCow + 0.8f, yCow + -1.0f, zCow + 0.8f);//same
+         glRotatef(-angle, 1.0f, 0.0f, 0.0f);// neg angle + BS
+         glTranslatef(-xCow+-0.8f, -yCow+1.0f,-zCow+-0.8f);//same
+
+         glTranslatef(xCow + 0.8f, yCow + -1.0f, zCow + 0.8f);
+         glRotatef(angle, 1.0f, 0.0f, 0.0f);
+         glTranslatef(-xCow+-0.8f, -yCow+1.0f,-zCow+-0.8f);
+         frontLeftLegTop();
+         glTranslatef(xCow + 0.8f, yCow + -1.0f, zCow + 0.8f);
+         glRotatef(-angle, 1.0f, 0.0f, 0.0f);
+         glTranslatef(-xCow+-0.8f, -yCow+1.0f,-zCow+-0.8f);
+         angle += 4;
+
+         glTranslatef(xCow + 0.8f, yCow + -1.0f, zCow + 0.8f); //this tri is exactly as it's corrosponding top
+         glRotatef(angle, 1.0f, 0.0f, 0.0f);
+         glTranslatef(-xCow+-0.8f, -yCow+1.0f,-zCow+-0.8f);
+            glTranslatef(xCow+0.8f,yCow+ -1.4f,zCow+ 0.8f); //point on the actual bot portion closest to origin
+            glRotatef(angle3, 1.0f, 0.0f, 0.0f);
+            glTranslatef(-xCow+-0.8f,-yCow+ 1.4f, -zCow+-0.8f);//inverse
+               frontRightLegBot();
+            glTranslatef(xCow+0.8f,yCow+ -1.4f,zCow+ 0.8f); //same.1
+            glRotatef(-angle3, 1.0f, 0.0f, 0.0f);
+            glTranslatef(-xCow+-0.8f,-yCow+ 1.4f, -zCow+-0.8f);//same.1
+         glTranslatef(xCow + 0.8f, yCow + -1.0f, zCow + 0.8f);//same
+         glRotatef(-angle, 1.0f, 0.0f, 0.0f);
+         glTranslatef(-xCow+-0.8f, -yCow+1.0f,-zCow+-0.8f);//same
+
+         glTranslatef(xCow + 0.8f, yCow + -1.0f, zCow + 0.8f);
+         glRotatef(angle, 1.0f, 0.0f, 0.0f);
+         glTranslatef(-xCow+-0.8f, -yCow+1.0f,-zCow+-0.8f);
+            glTranslatef(xCow+0.8f,yCow+ -1.4f,zCow+ 0.8f);
+            glRotatef(angle3, 1.0f, 0.0f, 0.0f);
+            glTranslatef(-xCow+-0.8f,-yCow+ 1.4f, -zCow+-0.8f);
+               frontLeftLegBot();
+            glTranslatef(xCow+0.8f,yCow+ -1.4f,zCow+ 0.8f);
+            glRotatef(-angle3, 1.0f, 0.0f, 0.0f);
+            glTranslatef(-xCow+-0.8f,-yCow+ 1.4f, -zCow+-0.8f);
+         glTranslatef(xCow + 0.8f, yCow + -1.0f, zCow + 0.8f);
+         glRotatef(-angle, 1.0f, 0.0f, 0.0f);
+         glTranslatef(-xCow+-0.8f, -yCow+1.0f,-zCow+-0.8f);
+         //angle3++;
+
+         glTranslatef(xCow+0.8f, yCow+-1.0f, zCow+-1.8f);
+         glRotatef(angle2, 1.0f, 0.0f, 0.0f);
+         glTranslatef(-xCow+-0.8f, -yCow+1.0f, -zCow+1.8f);
+         backLeftLegTop();         
+         glTranslatef(xCow+0.8f, yCow+-1.0f, zCow+-1.8f);
+         glRotatef(-angle2, 1.0f, 0.0f, 0.0f);
+         glTranslatef(-xCow+-0.8f, -yCow+1.0f, -zCow+1.8f);
+
+         glTranslatef(xCow+-0.8f,yCow+ -1.0f,zCow+ -1.8f);
+         glRotatef(angle2, 1.0f, 0.0f, 0.0f);
+         glTranslatef(-xCow+0.8f,-yCow+ 1.0f,-zCow+ 1.8f);
+         backRightLegTop();
+         glTranslatef(xCow+-0.8f,yCow+ -1.0f,zCow+ -1.8f);
+         glRotatef(-angle2, 1.0f, 0.0f, 0.0f);
+         glTranslatef(-xCow+0.8f,-yCow+ 1.0f,-zCow+ 1.8f);
+         angle2 += 4;
+
+         glTranslatef(xCow+-0.8f,yCow+ -1.0f,zCow+ -1.8f);
+         glRotatef(angle2, 1.0f, 0.0f, 0.0f);
+         glTranslatef(-xCow+0.8f,-yCow+ 1.0f,-zCow+ 1.8f);
+            glTranslatef(xCow+-0.8f,yCow+ -1.4f,zCow+ -1.8f);
+            glRotatef(angle4, 1.0f, 0.0f, 0.0f);
+            glTranslatef(-xCow+0.8f, -yCow+1.4f, -zCow+1.8f);
+               backRightLegBot();
+            glTranslatef(xCow+-0.8f,yCow+ -1.4f,zCow+ -1.8f);
+            glRotatef(-angle4, 1.0f, 0.0f, 0.0f);
+            glTranslatef(-xCow+0.8f, -yCow+1.4f, -zCow+1.8f);
+         glTranslatef(xCow+-0.8f,yCow+ -1.0f,zCow+ -1.8f);
+         glRotatef(-angle2, 1.0f, 0.0f, 0.0f);
+         glTranslatef(-xCow+0.8f,-yCow+ 1.0f,-zCow+ 1.8f);
+
+         glTranslatef(xCow+0.8f, yCow+-1.0f, zCow+-1.8f);
+         glRotatef(angle2, 1.0f, 0.0f, 0.0f);
+         glTranslatef(-xCow+-0.8f, -yCow+1.0f, -zCow+1.8f);
+            glTranslatef(xCow+0.8f,yCow+ -1.4f,zCow+ -1.8f);
+            glRotatef(angle4, 1.0f, 0.0f, 0.0f);
+            glTranslatef(-xCow+-0.8f, -yCow+1.4f, -zCow+1.8f);
+               backLeftLegBot();
+            glTranslatef(xCow+0.8f,yCow+ -1.4f,zCow+ -1.8f);
+            glRotatef(-angle4, 1.0f, 0.0f, 0.0f);
+            glTranslatef(-xCow+-0.8f, -yCow+1.4f, -zCow+1.8f);
+         glTranslatef(xCow+0.8f, yCow+-1.0f, zCow+-1.8f);
+         glRotatef(-angle2, 1.0f, 0.0f, 0.0f);
+         glTranslatef(-xCow+-0.8f, -yCow+1.0f, -zCow+1.8f);
+         //angle4++;
+      }
+      if(phase == 5)
+      {
+         glTranslatef(xCow + 0.8f, yCow + -1.0f, zCow + 0.8f); // point is closest to the origin
+         glRotatef(angle, 1.0f, 0.0f, 0.0f);// pos angle + BS
+         glTranslatef(-xCow+-0.8f, -yCow+1.0f,-zCow+-0.8f);//inverse
+         frontRightLegTop();
+         glTranslatef(xCow + 0.8f, yCow + -1.0f, zCow + 0.8f);//same
+         glRotatef(-angle, 1.0f, 0.0f, 0.0f);// neg angle + BS
+         glTranslatef(-xCow+-0.8f, -yCow+1.0f,-zCow+-0.8f);//same
+
+         glTranslatef(xCow + 0.8f, yCow + -1.0f, zCow + 0.8f);
+         glRotatef(angle, 1.0f, 0.0f, 0.0f);
+         glTranslatef(-xCow+-0.8f, -yCow+1.0f,-zCow+-0.8f);
+         frontLeftLegTop();
+         glTranslatef(xCow + 0.8f, yCow + -1.0f, zCow + 0.8f);
+         glRotatef(-angle, 1.0f, 0.0f, 0.0f);
+         glTranslatef(-xCow+-0.8f, -yCow+1.0f,-zCow+-0.8f);
+         angle -= 4;
+
+         glTranslatef(xCow + 0.8f, yCow + -1.0f, zCow + 0.8f); //this tri is exactly as it's corrosponding top
+         glRotatef(angle, 1.0f, 0.0f, 0.0f);
+         glTranslatef(-xCow+-0.8f, -yCow+1.0f,-zCow+-0.8f);
+            glTranslatef(xCow+0.8f,yCow+ -1.4f,zCow+ 0.8f); //point on the actual bot portion closest to origin
+            glRotatef(angle3, 1.0f, 0.0f, 0.0f);
+            glTranslatef(-xCow+-0.8f,-yCow+ 1.4f, -zCow+-0.8f);//inverse
+               frontRightLegBot();
+            glTranslatef(xCow+0.8f,yCow+ -1.4f,zCow+ 0.8f); //same.1
+            glRotatef(-angle3, 1.0f, 0.0f, 0.0f);
+            glTranslatef(-xCow+-0.8f,-yCow+ 1.4f, -zCow+-0.8f);//same.1
+         glTranslatef(xCow + 0.8f, yCow + -1.0f, zCow + 0.8f);//same
+         glRotatef(-angle, 1.0f, 0.0f, 0.0f);
+         glTranslatef(-xCow+-0.8f, -yCow+1.0f,-zCow+-0.8f);//same
+
+         glTranslatef(xCow + 0.8f, yCow + -1.0f, zCow + 0.8f);
+         glRotatef(angle, 1.0f, 0.0f, 0.0f);
+         glTranslatef(-xCow+-0.8f, -yCow+1.0f,-zCow+-0.8f);
+            glTranslatef(xCow+0.8f,yCow+ -1.4f,zCow+ 0.8f);
+            glRotatef(angle3, 1.0f, 0.0f, 0.0f);
+            glTranslatef(-xCow+-0.8f,-yCow+ 1.4f, -zCow+-0.8f);
+               frontLeftLegBot();
+            glTranslatef(xCow+0.8f,yCow+ -1.4f,zCow+ 0.8f);
+            glRotatef(-angle3, 1.0f, 0.0f, 0.0f);
+            glTranslatef(-xCow+-0.8f,-yCow+ 1.4f, -zCow+-0.8f);
+         glTranslatef(xCow + 0.8f, yCow + -1.0f, zCow + 0.8f);
+         glRotatef(-angle, 1.0f, 0.0f, 0.0f);
+         glTranslatef(-xCow+-0.8f, -yCow+1.0f,-zCow+-0.8f);
+         angle3 += 4;
+
+         glTranslatef(xCow+0.8f, yCow+-1.0f, zCow+-1.8f);
+         glRotatef(angle2, 1.0f, 0.0f, 0.0f);
+         glTranslatef(-xCow+-0.8f, -yCow+1.0f, -zCow+1.8f);
+         backLeftLegTop();         
+         glTranslatef(xCow+0.8f, yCow+-1.0f, zCow+-1.8f);
+         glRotatef(-angle2, 1.0f, 0.0f, 0.0f);
+         glTranslatef(-xCow+-0.8f, -yCow+1.0f, -zCow+1.8f);
+
+         glTranslatef(xCow+-0.8f,yCow+ -1.0f,zCow+ -1.8f);
+         glRotatef(angle2, 1.0f, 0.0f, 0.0f);
+         glTranslatef(-xCow+0.8f,-yCow+ 1.0f,-zCow+ 1.8f);
+         backRightLegTop();
+         glTranslatef(xCow+-0.8f,yCow+ -1.0f,zCow+ -1.8f);
+         glRotatef(-angle2, 1.0f, 0.0f, 0.0f);
+         glTranslatef(-xCow+0.8f,-yCow+ 1.0f,-zCow+ 1.8f);
+         angle2 += 4;
+
+         glTranslatef(xCow+-0.8f,yCow+ -1.0f,zCow+ -1.8f);
+         glRotatef(angle2, 1.0f, 0.0f, 0.0f);
+         glTranslatef(-xCow+0.8f,-yCow+ 1.0f,-zCow+ 1.8f);
+            glTranslatef(xCow+-0.8f,yCow+ -1.4f,zCow+ -1.8f);
+            glRotatef(angle4, 1.0f, 0.0f, 0.0f);
+            glTranslatef(-xCow+0.8f, -yCow+1.4f, -zCow+1.8f);
+               backRightLegBot();
+            glTranslatef(xCow+-0.8f,yCow+ -1.4f,zCow+ -1.8f);
+            glRotatef(-angle4, 1.0f, 0.0f, 0.0f);
+            glTranslatef(-xCow+0.8f, -yCow+1.4f, -zCow+1.8f);
+         glTranslatef(xCow+-0.8f,yCow+ -1.0f,zCow+ -1.8f);
+         glRotatef(-angle2, 1.0f, 0.0f, 0.0f);
+         glTranslatef(-xCow+0.8f,-yCow+ 1.0f,-zCow+ 1.8f);
+
+         glTranslatef(xCow+0.8f, yCow+-1.0f, zCow+-1.8f);
+         glRotatef(angle2, 1.0f, 0.0f, 0.0f);
+         glTranslatef(-xCow+-0.8f, -yCow+1.0f, -zCow+1.8f);
+            glTranslatef(xCow+0.8f,yCow+ -1.4f,zCow+ -1.8f);
+            glRotatef(angle4, 1.0f, 0.0f, 0.0f);
+            glTranslatef(-xCow+-0.8f, -yCow+1.4f, -zCow+1.8f);
+               backLeftLegBot();
+            glTranslatef(xCow+0.8f,yCow+ -1.4f,zCow+ -1.8f);
+            glRotatef(-angle4, 1.0f, 0.0f, 0.0f);
+            glTranslatef(-xCow+-0.8f, -yCow+1.4f, -zCow+1.8f);
+         glTranslatef(xCow+0.8f, yCow+-1.0f, zCow+-1.8f);
+         glRotatef(-angle2, 1.0f, 0.0f, 0.0f);
+         glTranslatef(-xCow+-0.8f, -yCow+1.0f, -zCow+1.8f);
+         //angle4++;
+      }
+      if(phase == 6)
+      {
+         glTranslatef(xCow + 0.8f, yCow + -1.0f, zCow + 0.8f); // point is closest to the origin
+         glRotatef(angle, 1.0f, 0.0f, 0.0f);// pos angle + BS
+         glTranslatef(-xCow+-0.8f, -yCow+1.0f,-zCow+-0.8f);//inverse
+         frontRightLegTop();
+         glTranslatef(xCow + 0.8f, yCow + -1.0f, zCow + 0.8f);//same
+         glRotatef(-angle, 1.0f, 0.0f, 0.0f);// neg angle + BS
+         glTranslatef(-xCow+-0.8f, -yCow+1.0f,-zCow+-0.8f);//same
+
+         glTranslatef(xCow + 0.8f, yCow + -1.0f, zCow + 0.8f);
+         glRotatef(angle, 1.0f, 0.0f, 0.0f);
+         glTranslatef(-xCow+-0.8f, -yCow+1.0f,-zCow+-0.8f);
+         frontLeftLegTop();
+         glTranslatef(xCow + 0.8f, yCow + -1.0f, zCow + 0.8f);
+         glRotatef(-angle, 1.0f, 0.0f, 0.0f);
+         glTranslatef(-xCow+-0.8f, -yCow+1.0f,-zCow+-0.8f);
+         //angle--;
+
+         glTranslatef(xCow + 0.8f, yCow + -1.0f, zCow + 0.8f); //this tri is exactly as it's corrosponding top
+         glRotatef(angle, 1.0f, 0.0f, 0.0f);
+         glTranslatef(-xCow+-0.8f, -yCow+1.0f,-zCow+-0.8f);
+            glTranslatef(xCow+0.8f,yCow+ -1.4f,zCow+ 0.8f); //point on the actual bot portion closest to origin
+            glRotatef(angle3, 1.0f, 0.0f, 0.0f);
+            glTranslatef(-xCow+-0.8f,-yCow+ 1.4f, -zCow+-0.8f);//inverse
+               frontRightLegBot();
+            glTranslatef(xCow+0.8f,yCow+ -1.4f,zCow+ 0.8f); //same.1
+            glRotatef(-angle3, 1.0f, 0.0f, 0.0f);
+            glTranslatef(-xCow+-0.8f,-yCow+ 1.4f, -zCow+-0.8f);//same.1
+         glTranslatef(xCow + 0.8f, yCow + -1.0f, zCow + 0.8f);//same
+         glRotatef(-angle, 1.0f, 0.0f, 0.0f);
+         glTranslatef(-xCow+-0.8f, -yCow+1.0f,-zCow+-0.8f);//same
+
+         glTranslatef(xCow + 0.8f, yCow + -1.0f, zCow + 0.8f);
+         glRotatef(angle, 1.0f, 0.0f, 0.0f);
+         glTranslatef(-xCow+-0.8f, -yCow+1.0f,-zCow+-0.8f);
+            glTranslatef(xCow+0.8f,yCow+ -1.4f,zCow+ 0.8f);
+            glRotatef(angle3, 1.0f, 0.0f, 0.0f);
+            glTranslatef(-xCow+-0.8f,-yCow+ 1.4f, -zCow+-0.8f);
+               frontLeftLegBot();
+            glTranslatef(xCow+0.8f,yCow+ -1.4f,zCow+ 0.8f);
+            glRotatef(-angle3, 1.0f, 0.0f, 0.0f);
+            glTranslatef(-xCow+-0.8f,-yCow+ 1.4f, -zCow+-0.8f);
+         glTranslatef(xCow + 0.8f, yCow + -1.0f, zCow + 0.8f);
+         glRotatef(-angle, 1.0f, 0.0f, 0.0f);
+         glTranslatef(-xCow+-0.8f, -yCow+1.0f,-zCow+-0.8f);
+         //angle3++;
+
+         glTranslatef(xCow+0.8f, yCow+-1.0f, zCow+-1.8f);
+         glRotatef(angle2, 1.0f, 0.0f, 0.0f);
+         glTranslatef(-xCow+-0.8f, -yCow+1.0f, -zCow+1.8f);
+         backLeftLegTop();         
+         glTranslatef(xCow+0.8f, yCow+-1.0f, zCow+-1.8f);
+         glRotatef(-angle2, 1.0f, 0.0f, 0.0f);
+         glTranslatef(-xCow+-0.8f, -yCow+1.0f, -zCow+1.8f);
+
+         glTranslatef(xCow+-0.8f,yCow+ -1.0f,zCow+ -1.8f);
+         glRotatef(angle2, 1.0f, 0.0f, 0.0f);
+         glTranslatef(-xCow+0.8f,-yCow+ 1.0f,-zCow+ 1.8f);
+         backRightLegTop();
+         glTranslatef(xCow+-0.8f,yCow+ -1.0f,zCow+ -1.8f);
+         glRotatef(-angle2, 1.0f, 0.0f, 0.0f);
+         glTranslatef(-xCow+0.8f,-yCow+ 1.0f,-zCow+ 1.8f);
+         angle2 -= 4;
+
+         glTranslatef(xCow+-0.8f,yCow+ -1.0f,zCow+ -1.8f);
+         glRotatef(angle2, 1.0f, 0.0f, 0.0f);
+         glTranslatef(-xCow+0.8f,-yCow+ 1.0f,-zCow+ 1.8f);
+            glTranslatef(xCow+-0.8f,yCow+ -1.4f,zCow+ -1.8f);
+            glRotatef(angle4, 1.0f, 0.0f, 0.0f);
+            glTranslatef(-xCow+0.8f, -yCow+1.4f, -zCow+1.8f);
+               backRightLegBot();
+            glTranslatef(xCow+-0.8f,yCow+ -1.4f,zCow+ -1.8f);
+            glRotatef(-angle4, 1.0f, 0.0f, 0.0f);
+            glTranslatef(-xCow+0.8f, -yCow+1.4f, -zCow+1.8f);
+         glTranslatef(xCow+-0.8f,yCow+ -1.0f,zCow+ -1.8f);
+         glRotatef(-angle2, 1.0f, 0.0f, 0.0f);
+         glTranslatef(-xCow+0.8f,-yCow+ 1.0f,-zCow+ 1.8f);
+
+         glTranslatef(xCow+0.8f, yCow+-1.0f, zCow+-1.8f);
+         glRotatef(angle2, 1.0f, 0.0f, 0.0f);
+         glTranslatef(-xCow+-0.8f, -yCow+1.0f, -zCow+1.8f);
+            glTranslatef(xCow+0.8f,yCow+ -1.4f,zCow+ -1.8f);
+            glRotatef(angle4, 1.0f, 0.0f, 0.0f);
+            glTranslatef(-xCow+-0.8f, -yCow+1.4f, -zCow+1.8f);
+               backLeftLegBot();
+            glTranslatef(xCow+0.8f,yCow+ -1.4f,zCow+ -1.8f);
+            glRotatef(-angle4, 1.0f, 0.0f, 0.0f);
+            glTranslatef(-xCow+-0.8f, -yCow+1.4f, -zCow+1.8f);
+         glTranslatef(xCow+0.8f, yCow+-1.0f, zCow+-1.8f);
+         glRotatef(-angle2, 1.0f, 0.0f, 0.0f);
+         glTranslatef(-xCow+-0.8f, -yCow+1.0f, -zCow+1.8f);
+         //angle4++;
+      }
+   }
+   else
+   {
+      glTranslatef(xCow + 0.8f, yCow + -1.0f, zCow + 0.8f); // point is closest to the origin
+         glRotatef(angle, 1.0f, 0.0f, 0.0f);// pos angle + BS
+         glTranslatef(-xCow+-0.8f, -yCow+1.0f,-zCow+-0.8f);//inverse
+         frontRightLegTop();
+         glTranslatef(xCow + 0.8f, yCow + -1.0f, zCow + 0.8f);//same
+         glRotatef(-angle, 1.0f, 0.0f, 0.0f);// neg angle + BS
+         glTranslatef(-xCow+-0.8f, -yCow+1.0f,-zCow+-0.8f);//same
+
+         glTranslatef(xCow + 0.8f, yCow + -1.0f, zCow + 0.8f);
+         glRotatef(angle, 1.0f, 0.0f, 0.0f);
+         glTranslatef(-xCow+-0.8f, -yCow+1.0f,-zCow+-0.8f);
+         frontLeftLegTop();
+         glTranslatef(xCow + 0.8f, yCow + -1.0f, zCow + 0.8f);
+         glRotatef(-angle, 1.0f, 0.0f, 0.0f);
+         glTranslatef(-xCow+-0.8f, -yCow+1.0f,-zCow+-0.8f);
+         //angle--;
+
+         glTranslatef(xCow + 0.8f, yCow + -1.0f, zCow + 0.8f); //this tri is exactly as it's corrosponding top
+         glRotatef(angle, 1.0f, 0.0f, 0.0f);
+         glTranslatef(-xCow+-0.8f, -yCow+1.0f,-zCow+-0.8f);
+            glTranslatef(xCow+0.8f,yCow+ -1.4f,zCow+ 0.8f); //point on the actual bot portion closest to origin
+            glRotatef(angle3, 1.0f, 0.0f, 0.0f);
+            glTranslatef(-xCow+-0.8f,-yCow+ 1.4f, -zCow+-0.8f);//inverse
+               frontRightLegBot();
+            glTranslatef(xCow+0.8f,yCow+ -1.4f,zCow+ 0.8f); //same.1
+            glRotatef(-angle3, 1.0f, 0.0f, 0.0f);
+            glTranslatef(-xCow+-0.8f,-yCow+ 1.4f, -zCow+-0.8f);//same.1
+         glTranslatef(xCow + 0.8f, yCow + -1.0f, zCow + 0.8f);//same
+         glRotatef(-angle, 1.0f, 0.0f, 0.0f);
+         glTranslatef(-xCow+-0.8f, -yCow+1.0f,-zCow+-0.8f);//same
+
+         glTranslatef(xCow + 0.8f, yCow + -1.0f, zCow + 0.8f);
+         glRotatef(angle, 1.0f, 0.0f, 0.0f);
+         glTranslatef(-xCow+-0.8f, -yCow+1.0f,-zCow+-0.8f);
+            glTranslatef(xCow+0.8f,yCow+ -1.4f,zCow+ 0.8f);
+            glRotatef(angle3, 1.0f, 0.0f, 0.0f);
+            glTranslatef(-xCow+-0.8f,-yCow+ 1.4f, -zCow+-0.8f);
+               frontLeftLegBot();
+            glTranslatef(xCow+0.8f,yCow+ -1.4f,zCow+ 0.8f);
+            glRotatef(-angle3, 1.0f, 0.0f, 0.0f);
+            glTranslatef(-xCow+-0.8f,-yCow+ 1.4f, -zCow+-0.8f);
+         glTranslatef(xCow + 0.8f, yCow + -1.0f, zCow + 0.8f);
+         glRotatef(-angle, 1.0f, 0.0f, 0.0f);
+         glTranslatef(-xCow+-0.8f, -yCow+1.0f,-zCow+-0.8f);
+         //angle3++;
+
+         glTranslatef(xCow+0.8f, yCow+-1.0f, zCow+-1.8f);
+         glRotatef(angle2, 1.0f, 0.0f, 0.0f);
+         glTranslatef(-xCow+-0.8f, -yCow+1.0f, -zCow+1.8f);
+         backLeftLegTop();         
+         glTranslatef(xCow+0.8f, yCow+-1.0f, zCow+-1.8f);
+         glRotatef(-angle2, 1.0f, 0.0f, 0.0f);
+         glTranslatef(-xCow+-0.8f, -yCow+1.0f, -zCow+1.8f);
+
+         glTranslatef(xCow+-0.8f,yCow+ -1.0f,zCow+ -1.8f);
+         glRotatef(angle2, 1.0f, 0.0f, 0.0f);
+         glTranslatef(-xCow+0.8f,-yCow+ 1.0f,-zCow+ 1.8f);
+         backRightLegTop();
+         glTranslatef(xCow+-0.8f,yCow+ -1.0f,zCow+ -1.8f);
+         glRotatef(-angle2, 1.0f, 0.0f, 0.0f);
+         glTranslatef(-xCow+0.8f,-yCow+ 1.0f,-zCow+ 1.8f);
+         //angle2--;
+
+         glTranslatef(xCow+-0.8f,yCow+ -1.0f,zCow+ -1.8f);
+         glRotatef(angle2, 1.0f, 0.0f, 0.0f);
+         glTranslatef(-xCow+0.8f,-yCow+ 1.0f,-zCow+ 1.8f);
+            glTranslatef(xCow+-0.8f,yCow+ -1.4f,zCow+ -1.8f);
+            glRotatef(angle4, 1.0f, 0.0f, 0.0f);
+            glTranslatef(-xCow+0.8f, -yCow+1.4f, -zCow+1.8f);
+               backRightLegBot();
+            glTranslatef(xCow+-0.8f,yCow+ -1.4f,zCow+ -1.8f);
+            glRotatef(-angle4, 1.0f, 0.0f, 0.0f);
+            glTranslatef(-xCow+0.8f, -yCow+1.4f, -zCow+1.8f);
+         glTranslatef(xCow+-0.8f,yCow+ -1.0f,zCow+ -1.8f);
+         glRotatef(-angle2, 1.0f, 0.0f, 0.0f);
+         glTranslatef(-xCow+0.8f,-yCow+ 1.0f,-zCow+ 1.8f);
+
+         glTranslatef(xCow+0.8f, yCow+-1.0f, zCow+-1.8f);
+         glRotatef(angle2, 1.0f, 0.0f, 0.0f);
+         glTranslatef(-xCow+-0.8f, -yCow+1.0f, -zCow+1.8f);
+            glTranslatef(xCow+0.8f,yCow+ -1.4f,zCow+ -1.8f);
+            glRotatef(angle4, 1.0f, 0.0f, 0.0f);
+            glTranslatef(-xCow+-0.8f, -yCow+1.4f, -zCow+1.8f);
+               backLeftLegBot();
+            glTranslatef(xCow+0.8f,yCow+ -1.4f,zCow+ -1.8f);
+            glRotatef(-angle4, 1.0f, 0.0f, 0.0f);
+            glTranslatef(-xCow+-0.8f, -yCow+1.4f, -zCow+1.8f);
+         glTranslatef(xCow+0.8f, yCow+-1.0f, zCow+-1.8f);
+         glRotatef(-angle2, 1.0f, 0.0f, 0.0f);
+         glTranslatef(-xCow+-0.8f, -yCow+1.0f, -zCow+1.8f);
+         //angle4++;
+
+         angle = 0; 
+         angle2 = 0; 
+         angle3 = 0;
+         angle4 = 0;
+         phase = 1;
+   }
+	
+
+   glTranslatef(-xCow, -yCow, -zCow);
 }
 
 void lWing()
@@ -486,9 +1237,9 @@ void drawChicken(GLuint texture[])
 
    //The head  
    glPushMatrix();
-   glTranslatef(0.0f, 1.0f, 1.0f);
+   glTranslatef(xChicken + 0.0f, yChicken + 1.0f, zChicken + 1.0f);
    glRotatef(LAngle, 0.0f, 1.0f, 0.0f);
-   glTranslatef(0.0f, -1.0f, -1.0f);
+   glTranslatef(-xChicken + 0.0f, -yChicken + -1.0f, -zChicken + -1.0f);
    glBegin(GL_QUADS);
       glColor3f(1.0f, 0.87f, 0.68f);
       glVertex3f(xChicken + 0.5f, yChicken + 1.5f, zChicken + 0.8f);
@@ -518,14 +1269,14 @@ void drawChicken(GLuint texture[])
 
       //The Eyes
       glColor3f(0.0f, 0.0f, 0.0f);
-      glVertex3f(xChicken + 0.5f, yChicken + 1.5f, zChicken + 1.8f);
-      glVertex3f(xChicken + 0.25f, yChicken + 1.5f, zChicken + 1.8f);
-      glVertex3f(xChicken + 0.25f, yChicken + 1.25f, zChicken + 1.8f);
-      glVertex3f(xChicken + 0.5f, yChicken + 1.25f, zChicken + 1.8f);
-      glVertex3f(xChicken + -0.25f, yChicken + 1.5f, zChicken + 1.8f);
-      glVertex3f(xChicken + -0.5f, yChicken + 1.5f, zChicken + 1.8f);
-      glVertex3f(xChicken + -0.5f, yChicken + 1.25f, zChicken + 1.8f);
-      glVertex3f(xChicken + -0.25f, yChicken + 1.25f, zChicken + 1.8f);
+      glVertex3f(xChicken + 0.5f, yChicken + 1.5f, zChicken + 1.81f);
+      glVertex3f(xChicken + 0.25f, yChicken + 1.5f, zChicken + 1.81f);
+      glVertex3f(xChicken + 0.25f, yChicken + 1.25f, zChicken + 1.81f);
+      glVertex3f(xChicken + 0.5f, yChicken + 1.25f, zChicken + 1.81f);
+      glVertex3f(xChicken + -0.25f, yChicken + 1.5f, zChicken + 1.81f);
+      glVertex3f(xChicken + -0.5f, yChicken + 1.5f, zChicken + 1.81f);
+      glVertex3f(xChicken + -0.5f, yChicken + 1.25f, zChicken + 1.81f);
+      glVertex3f(xChicken + -0.25f, yChicken + 1.25f, zChicken + 1.81f);
      
       //The Beak
       glColor3f(1.0f, 1.0f, 0.0f);
@@ -626,9 +1377,9 @@ void drawChicken(GLuint texture[])
 
    //Left Wing
    glPushMatrix();
-   glTranslatef(-1.0f, 1.0f, 0.0f);
+   glTranslatef(xChicken + -1.0f, yChicken +  1.0f, zChicken + 0.0f);
    glRotatef(LAngle, 0.0f, 0.0f, 1.0f);
-   glTranslatef(1.0f, -1.0f, 0.0f);
+   glTranslatef(-xChicken + 1.0f, -yChicken +  -1.0f, -zChicken + 0.0f);
    glBegin(GL_QUADS);
       glColor3f(0.8f, 0.5f, 0.25f);
       glTexCoord2d(0.0,0.0); glVertex3f(xChicken + -1.0f, yChicken + 1.0f, zChicken + 0.75f);
@@ -641,9 +1392,9 @@ void drawChicken(GLuint texture[])
    glBindTexture(GL_TEXTURE_2D, texture[0]);
    //Right wing
    glPushMatrix();
-   glTranslatef(1.0f, 1.0f, 0.0f);
+   glTranslatef(xChicken + 1.0f, yChicken + 1.0f, zChicken + 0.0f);
    glRotatef(RAngle, 0.0f, 0.0f, 1.0f);
-   glTranslatef(-1.0f, -1.0f, 0.0f);
+   glTranslatef(-xChicken + -1.0f, -yChicken + -1.0f, -zChicken + 0.0f);
    glBegin(GL_QUADS);
       glTexCoord2d(0.0,0.0); glVertex3f(xChicken + 1.0f, yChicken + 1.0f, zChicken + -0.75f);
       glTexCoord2d(1.0,0.0); glVertex3f(xChicken + 1.0f, yChicken + 1.0f, zChicken + 0.75f);
@@ -652,23 +1403,31 @@ void drawChicken(GLuint texture[])
    glEnd();
    glPopMatrix();
 
-   //lWing();
-   //rWing();
+   if(chickenAnimation == 1)
+   {
+      lWing();
+      rWing();
+   }
 }
 
 void drawUFO()
 {
    glDisable(GL_TEXTURE_2D);
    glColor3f(0.0f, 1.0f, 0.0f);
-   for(int i = 0; i < 360; i++)
+   if(ufoBeam == 1)
    {
-      glBegin(GL_LINES);
-         glVertex3f(xUFO + sin(i), yUFO + -2.0f, zUFO + cos(i));
-         glVertex3f(xUFO + sin(i), yUFO + -10.0f, zUFO + cos(i));
-      glEnd();
+      for(int i = 0; i < 360; i++)
+      {
+         glBegin(GL_LINES);
+            glVertex3f(xUFO + sin(i), yUFO + -2.0f, zUFO + cos(i));
+            glVertex3f(xUFO + sin(i), yChicken, zUFO + cos(i));
+         glEnd();
+      }
    }
 
-   glRotatef(angle,0.0,1.0,0.0);
+   glTranslatef(xUFO, yUFO, zUFO);
+   glRotatef(angle5,0.0,1.0,0.0);
+   glTranslatef(-xUFO, -yUFO, -zUFO);
 
    glBegin(GL_TRIANGLE_FAN);
       glVertex3f(xUFO + 0, yUFO + 2, zUFO + 0);
@@ -679,9 +1438,13 @@ void drawUFO()
       }
    glEnd();
 
-   glRotatef(-angle,0.0,1.0,0.0);
+   glTranslatef(xUFO, yUFO, zUFO);
+   glRotatef(-angle5,0.0,1.0,0.0);
+   glTranslatef(-xUFO, -yUFO, -zUFO);
 
-   glRotatef(-angle,0.0,1.0,0.0);
+   glTranslatef(xUFO, yUFO, zUFO);
+   glRotatef(-angle5,0.0,1.0,0.0);
+   glTranslatef(-xUFO, -yUFO, -zUFO);
 
    glColor3f(1.0f, 0.0f, 0.0f);
    glBegin(GL_TRIANGLE_FAN);
@@ -693,8 +1456,9 @@ void drawUFO()
       }
    glEnd();
 
-   glRotatef(angle,0.0,1.0,0.0);
-
+   glTranslatef(xUFO, yUFO, zUFO);
+   glRotatef(angle5,0.0,1.0,0.0);
+   glTranslatef(-xUFO, -yUFO, -zUFO);
 
    //landing gear
    glTranslatef(xUFO + -6.5f, yUFO + -3.0f, zUFO + -6.5f);
@@ -1185,10 +1949,19 @@ void lightc()
    glShadeModel(GL_FLAT);
 }
 
+void drawEgg()
+{
+   //xChicken = 15; yChicken = 0.01; zChicken = 25;
+   glTranslatef(15.0f, -0.02f, 22);
+   glColor3f(0.5f, 0.5f, 0.5f);
+   glutSolidSphere(0.3f, 50.0f, 50.0f);
+   glTranslatef(-15.0f, -0.02f, -22);
+}
+
 void myDisplay()
 {
 
-   glClearColor (0.0,0.0,0.0, 1.0); //clear the screen to black
+   glClearColor (0.0,0.0,1.0, 1.0); //clear the screen to black
    glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //clear the color buffer and the depth buffer
    glLoadIdentity();
 
@@ -1214,52 +1987,291 @@ void myDisplay()
    glColor3f(1.0f, 1.0f, 1.0f);
 
    //rayglFrameBegin("movie");
+   if(moviePhase1 == 0 && timer > 3)
+   {
+      moviePhase1++;
+   }
+   else if(moviePhase1 == 1)
+   {
+      glRotatef(90,0.0,1.0,0.0);
+      glRotatef(-20,0.0,0.0,1.0);
+      glTranslatef(-80.0f, -0.0f, 5);
+      isWalking = 1;
+      zCow += 0.01;
+      if(zCow > 7.2)
+      {
+         moviePhase1++;
+         tempTimer = timer;
+      }
+   }
+   else if(moviePhase1 == 2)
+   {
+      glRotatef(90,0.0,1.0,0.0);
+      glRotatef(-20,0.0,0.0,1.0);
+      glTranslatef(-80.0f, -0.0f, 5);
+      isWalking = 0;
+      if(timer > 8)
+      {
+         moviePhase1++;
+         tempTimer = timer;
+      }
+   }
+   else if(moviePhase1 == 3)
+   {
+      glRotatef(90,0.0,1.0,0.0);
+      glRotatef(-20,0.0,0.0,1.0);
+      glTranslatef(-95.0f, -0.0f, 5);
+      cowHeadMove = 1;
+      if((timer-tempTimer) > 3)
+      {
+         moviePhase1++;
+         tempTimer = timer;
+      }
+   }
+   else if(moviePhase1 == 4)
+   {
+      glRotatef(-35,1.0,0.0,0.0);
+      glTranslatef(5.0f, -20.0f, 30.0);
+      cowHeadMove = 0;
+      chickenAnimation = 1;
+      if((timer-tempTimer) > 3)
+      {
+         moviePhase1++;
+         tempTimer = timer;
+      }
+   }
+   else if(moviePhase1 == 5)
+   {
+      glTranslatef(0.0f, -20.0f, -20.0);
+      if(UFOAngle == 360)
+      {
+         UFOAngle = 0;
+      }
+      xUFO = -sin(UFOAngle) * 50; 
+      zUFO = -cos(UFOAngle) * 50;
+      yUFO += 0.1;
+      UFOAngle += .01;
+      
+      chickenAnimation = 0;
+      if(yUFO > 15)
+      {
+         moviePhase1++;
+         tempTimer = timer;
+      }
+   }
+   else if(moviePhase1 == 6)
+   {
+      glTranslatef(0.0f, -20.0f, -20.0);
+      if(UFOAngle == 360)
+      {
+         UFOAngle = 0;
+      }
+      xUFO = -sin(UFOAngle) * 50; 
+      zUFO = -cos(UFOAngle) * 50;
+      UFOAngle += .01;
+      
+      if(zUFO < 13)
+      {
+         moviePhase1++;
+         tempTimer = timer;
+      }
+   }
+   else if(moviePhase1 == 7)
+   {
+      zUFO += 0.05;
+      xUFO -= 0.05;
+      
+      if((timer-tempTimer) > 6)
+      {
+         moviePhase1++;
+         tempTimer = timer;
+      }
+   }
+   else if(moviePhase1 == 8)
+   {
+      xUFO += 0.05;
+      
+      if((timer-tempTimer) > 2)
+      {
+         moviePhase1++;
+         tempTimer = timer;
+      }
+   }
+   else if(moviePhase1 == 9)
+   {
+      zUFO -= 0.02;
+      xUFO -= 0.05;
+      
+      if((timer-tempTimer) > 2)
+      {
+         moviePhase1++;
+         tempTimer = timer;
+      }
+   }
+   else if(moviePhase1 == 10)
+   {
+      glRotatef(90,0.0,1.0,0.0);
+      glRotatef(-20,0.0,0.0,1.0);
+      glTranslatef(-60.0f, -5.0f, -12.5);
+      yUFO -= 0.01;
+      
+      chickenAnimation = 1;
+      if(yUFO < 3.2)
+      {
+         moviePhase1++;
+         moviePhase2++;
+         tempTimer = timer;
+      }
+   }
+   else if(moviePhase2 == 1)
+   {
+      glRotatef(90,0.0,1.0,0.0);
+      glRotatef(-20,0.0,0.0,1.0);
+      glTranslatef(-60.0f, -5.0f, -12.5);
+      yUFO += 0.01;
+      egg = 1;
+
+      chickenAnimation = 1;
+      if(yUFO > 9.1)
+      {
+         moviePhase2++;
+         tempTimer = timer;
+      }
+   }
+   else if(moviePhase2 == 2)
+   {
+      glRotatef(90,0.0,1.0,0.0);
+      glRotatef(-20,0.0,0.0,1.0);
+      glTranslatef(-60.0f, -5.0f, -12.5);
+      yUFO += 0.01;
+      zUFO -= 0.03;
+
+      chickenAnimation = 1;
+      if(yUFO > 14)
+      {
+         moviePhase2++;
+         tempTimer = timer;
+      }
+   }
+   else if(moviePhase2 == 3)
+   {
+      glRotatef(90,0.0,1.0,0.0);
+      glRotatef(-20,0.0,0.0,1.0);
+      glTranslatef(-60.0f, -5.0f, -12.5);
+      yChicken += 0.01;
+      ufoBeam = 1;
+      chickenAnimation = 1;
+      if(yChicken > 9)
+      {
+         moviePhase2++;
+         tempTimer = timer;
+      }
+   }
+   else if(moviePhase2 == 4)
+   {
+      glRotatef(90,0.0,1.0,0.0);
+      glRotatef(-20,0.0,0.0,1.0);
+      glTranslatef(-60.0f, -5.0f, -12.5);
+      ufoBeam = 0;
+      yChicken = -100;
+      chickenAnimation = 0;
+      if((timer-tempTimer) > 2)
+      {
+         moviePhase2++;
+         tempTimer = timer;
+      }
+   }
+   else if(moviePhase2 == 5)
+   {
+      zUFO -= 0.02;
+      xUFO += 0.02;
+      if((timer-tempTimer) > 6)
+      {
+         moviePhase2++;
+         tempTimer = timer;
+      }
+   }
+   else if(moviePhase2 == 6)
+   {
+      zCow += 0.02;
+      xCow -= 0.02;
+      if((timer-tempTimer) > 4)
+      {
+         moviePhase2++;
+         tempTimer = timer;
+      }
+   }
+   else if(moviePhase2 == 7)
+   {
+      zCow += 0.02;
+      xCow += 0.02;
+      if((timer-tempTimer) > 4)
+      {
+         moviePhase2++;
+         tempTimer = timer;
+      }
+   }
+   else if(moviePhase2 == 8)
+   {
+      zCow -= 0.02;
+      xCow -= 0.02;
+      if((timer-tempTimer) > 4)
+      {
+         moviePhase2++;
+         tempTimer = timer;
+      }
+   }
+   else if(moviePhase2 == 9)
+   {
+      zCow -= 0.02;
+      xCow += 0.02;
+      if((timer-tempTimer) > 3)
+      {
+         //moviePhase2++;
+         tempTimer = timer;
+      }
+   }
+
+   printf("%f %d %d %f %f %f %f\n", yChicken, moviePhase1, moviePhase2, timer, tempTimer, yUFO, zUFO);
 
    drawEnvironment(texture);
-   xUFO = 0; yUFO = 10; zUFO = 0;
    drawUFO();
-   xChicken = 10; yChicken = 0.01; zChicken = 15;
    drawChicken(texture);
-   xCow = 15; yCow = 0.01; zCow = 15;
-   drawCow(texture);
+   if(moviePhase2 < 6)
+   {
+      drawCow(texture);
+   }
+   if(moviePhase2  6)
+   {
+      //glTranslatef(xCow+-0.8f,yCow+ -1.0f,zCow+ -1.8f);
+      //glRotatef(-35,0.0,1.0,0.0);
+      //glTranslatef(-xCow+0.8f,-yCow+ 1.0f,-zCow+ 1.8f);
+      drawCow(texture);
+      //glTranslatef(xCow+-0.8f,yCow+ -1.0f,zCow+ -1.8f);
+      //glRotatef(35,0.0,1.0,0.0);
+      //glTranslatef(-xCow+0.8f,-yCow+ 1.0f,-zCow+ 1.8f);
+   }
+   if(egg == 1)
+   {
+      drawEgg();
+   }
 
-   //start 2d
-   glMatrixMode(GL_PROJECTION);
-   glPushMatrix();
-   glLoadIdentity();
-   glOrtho(0.0, 1000, 800, 0.0, -1.0, 10.0);
-   glMatrixMode(GL_MODELVIEW);
-   glLoadIdentity();
-   glDisable(GL_CULL_FACE);
-   glClear(GL_DEPTH_BUFFER_BIT);
-   glBegin(GL_QUADS);
-      glColor3f(1.0f, 1.0f, 1.0);
-      glVertex2f(50.0, 50.0);
-      glVertex2f(50.0, 100.0);
-      glVertex2f(100.0, 100.0);
-      glVertex2f(100.0, 50.0);
-   glEnd();
-   glBegin(GL_QUADS);
-      glColor3f(1.0f, 1.0f, 1.0);
-      glVertex2f(150.0, 150.0);
-      glVertex2f(150.0, 200.0);
-      glVertex2f(200.0, 200.0);
-      glVertex2f(200.0, 150.0);
-   glEnd();
-   glMatrixMode(GL_PROJECTION);
-   glPopMatrix();
-   glMatrixMode(GL_MODELVIEW);
-   //end 2s
 
    glutSwapBuffers(); //swap the buffers
 
+   timer += 0.01;
+
    //rayglFrameEnd();
 
-   angle++;
+   angle5++;
 }
 
 void myInit(void)
 {
+   xUFO = 5; yUFO = -10; zUFO = 0;
+   xChicken = 15; yChicken = 0.01; zChicken = 25;
+   xCow = 20; yCow = -0.5; zCow = 5;
+
    rayglTextureType(0);
    rayglTranslateTexture(0, 0, 0);
    rayglScaleTexture(1, 1, 1);
@@ -1267,7 +2279,7 @@ void myInit(void)
    setFadePower(1.4);
    glEnable (GL_DEPTH_TEST); //enable the depth testing
    glShadeModel (GL_SMOOTH); //set the shader to smooth shader
-   lightc();
+   //lightc();
 }
 
 void keyboard (unsigned char key, int x, int y)
@@ -1319,6 +2331,14 @@ void keyboard (unsigned char key, int x, int y)
       xpos -= float(cos(yrotrad)) * 0.2;
       zpos -= float(sin(yrotrad)) * 0.2;
     }*/
+    if (key=='q')
+    {
+      moviePhase1++;
+    }
+    if (key=='w')
+    {
+      moviePhase1--;
+    }
     if (key==27)
     {
       exit(0);
