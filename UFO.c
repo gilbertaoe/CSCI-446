@@ -19,15 +19,12 @@ int lastAdd = 1;
 
 void drawUFO()
 {
-
-   glColor3f(0.0f, 1.0f, 0.0f);
-   for(int i = 0; i < 360; i++)
-   {
-      glBegin(GL_LINES);
-         glVertex3f(xUFO + sin(i), yUFO + -2.0f, zUFO + cos(i));
-         glVertex3f(xUFO + sin(i), yUFO + -10.0f, zUFO + cos(i));
-      glEnd();
-   }
+   glColor3f(1.0f, 0.0f, 0.0f);
+   glLineWidth(8);
+   glBegin(GL_LINES);
+      glVertex3f(xUFO + 10, yUFO, zUFO);
+      glVertex3f(xUFO + 30, yUFO + -10, zUFO + 20);
+   glEnd();
 
    glRotatef(angle,0.0,1.0,0.0);
 

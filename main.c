@@ -34,6 +34,7 @@ int phase = 1;
 double angle, angle2 = 0;
 double angle3, angle4 = 0;
 double UFOAngle = 0;
+int doors = 1;
 
 int moviePhase1 = 0;
 int moviePhase2 = 0;
@@ -1811,29 +1812,32 @@ void drawFarm(GLuint texture[])
       glVertex3f(42.0f, 9.0f, 48.0f);
       glVertex3f(48.0f, 5.0f, 48.0f);
    glEnd();
+///////////////////////////////////doors
+   if(doors == 1)
+   {
+      glBindTexture(GL_TEXTURE_2D, texture[4]);
+      glColor3f(0.80f, 0.0f, 1.0f);
+      glBegin(GL_QUADS);
+         glTexCoord2d(0.0,0.0); glVertex3f(35.0f, 5.0f, 48.0f);
+         glTexCoord2d(0.0,1.0); glVertex3f(35.0f, 0.1f, 48.0f);
+         glTexCoord2d(1.0,1.0); glVertex3f(35.0f, 0.1f, 35.0f);
+         glTexCoord2d(1.0,0.0); glVertex3f(35.0f, 5.0f, 35.0f);
+      glEnd();
 
-   glBindTexture(GL_TEXTURE_2D, texture[4]);
-   glColor3f(0.80f, 0.0f, 1.0f);
-   glBegin(GL_QUADS);
-      glTexCoord2d(0.0,0.0); glVertex3f(35.0f, 5.0f, 48.0f);
-      glTexCoord2d(0.0,1.0); glVertex3f(35.0f, 0.1f, 48.0f);
-      glTexCoord2d(1.0,1.0); glVertex3f(35.0f, 0.1f, 35.0f);
-      glTexCoord2d(1.0,0.0); glVertex3f(35.0f, 5.0f, 35.0f);
-   glEnd();
+      glBegin(GL_QUADS);
+         glTexCoord2d(0.0,0.0); glVertex3f(35.0f, 5.0f, 35.0f);
+         glTexCoord2d(0.0,1.0); glVertex3f(35.0f, 0.1f, 35.0f);
+         glTexCoord2d(1.0,1.0); glVertex3f(35.0f, 0.1f, 30.0f);
+         glTexCoord2d(1.0,0.0); glVertex3f(35.0f, 5.0f, 30.0f);
+      glEnd();
 
-   glBegin(GL_QUADS);
-      glTexCoord2d(0.0,0.0); glVertex3f(35.0f, 5.0f, 35.0f);
-      glTexCoord2d(0.0,1.0); glVertex3f(35.0f, 0.1f, 35.0f);
-      glTexCoord2d(1.0,1.0); glVertex3f(35.0f, 0.1f, 30.0f);
-      glTexCoord2d(1.0,0.0); glVertex3f(35.0f, 5.0f, 30.0f);
-   glEnd();
+      glColor3f(0.0f, 0.0f, 0.0f);
 
-   glColor3f(0.0f, 0.0f, 0.0f);
-
-   glBegin(GL_LINES);
-      glVertex3f(34.9f, 5.0f, 39.0f);
-      glVertex3f(34.9f, 0.1f, 39.0f);
-   glEnd();
+      glBegin(GL_LINES);
+         glVertex3f(34.9f, 5.0f, 39.0f);
+         glVertex3f(34.9f, 0.1f, 39.0f);
+      glEnd();
+   }
 }
 
 void drawTrough()
@@ -1915,6 +1919,16 @@ void drawEnvironment(GLuint texture[])
    drawFarm(texture);
    drawTrough();
 }   
+
+void drawLaser(double x, double y, double z)
+{
+   glColor3f(1.0f, 0.0f, 0.0f);
+   glLineWidth(8);
+   glBegin(GL_LINES);
+      glVertex3f(xUFO + 10, yUFO, zUFO);
+      glVertex3f(x, y, z);
+   glEnd();
+}
 
 void lightc()
 {
@@ -2241,7 +2255,7 @@ void myDisplay()
    {
       drawCow(texture);
    }
-   if(moviePhase2  6)
+   if(moviePhase2 >=  6)
    {
       //glTranslatef(xCow+-0.8f,yCow+ -1.0f,zCow+ -1.8f);
       //glRotatef(-35,0.0,1.0,0.0);
