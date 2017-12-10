@@ -14,7 +14,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include "./raygl.h"
-//#include "./raygldefs.h"
+#include "./raygldefs.h"
 
 float xpos, ypos, zpos, xrot, yrot, zrot, angle5;
 float lastx, lasty;
@@ -2000,7 +2000,7 @@ void myDisplay()
    glTranslated(-19, 0.0f,-25); //translate the screen to the position of our camera
    glColor3f(1.0f, 1.0f, 1.0f);
 
-   //rayglFrameBegin("movie");
+   rayglFrameBegin("movie");
    if(moviePhase1 == 0 && timer > 3)
    {
       moviePhase1++;
@@ -2209,6 +2209,7 @@ void myDisplay()
    {
       zCow += 0.02;
       xCow -= 0.02;
+      isWalking = 1;
       if((timer-tempTimer) > 4)
       {
          moviePhase2++;
@@ -2217,8 +2218,12 @@ void myDisplay()
    }
    else if(moviePhase2 == 7)
    {
-      zCow += 0.02;
-      xCow += 0.02;
+      zCow -= 0.02;
+      xCow -= 0.02;
+      if((timer-tempTimer) < 1)
+      {
+         drawLaser(25, 0, 25);
+      }
       if((timer-tempTimer) > 4)
       {
          moviePhase2++;
@@ -2227,9 +2232,13 @@ void myDisplay()
    }
    else if(moviePhase2 == 8)
    {
-      zCow -= 0.02;
-      xCow -= 0.02;
-      if((timer-tempTimer) > 4)
+      zCow += 0.01;
+      //xCow -= 0.02;
+      if((timer-tempTimer) < 1)
+      {
+         drawLaser(15, 0, 15);
+      }
+      if((timer-tempTimer) > 6)
       {
          moviePhase2++;
          tempTimer = timer;
@@ -2237,33 +2246,175 @@ void myDisplay()
    }
    else if(moviePhase2 == 9)
    {
-      zCow -= 0.02;
+      xUFO -= .05;
+      zCow += 0.01;
+      xCow += 0.01;
+      if((timer-tempTimer) < 1)
+      {
+         drawLaser(25, 0, 35);
+      }
+      if((timer-tempTimer) > 6)
+      {
+         moviePhase2++;
+         tempTimer = timer;
+      }
+   }
+   else if(moviePhase2 == 10)
+   {
+      xUFO -= .05;
+      zCow += 0.01;
+      xCow -= 0.01;
+      if((timer-tempTimer) < 1)
+      {
+         drawLaser(25, 0, 40);
+      }
+      if((timer-tempTimer) > 2)
+      {
+         moviePhase2++;
+         tempTimer = timer;
+      }
+   }
+   else if(moviePhase2 == 11)
+   {
+      //zCow += 0.02;
       xCow += 0.02;
+      if((timer-tempTimer) < 1)
+      {
+         drawLaser(40, 0, 40);
+         doors = 0;
+      }
+      if((timer-tempTimer) > 6)
+      {
+         moviePhase2++;
+         tempTimer = timer;
+      }
+   }
+   else if(moviePhase2 == 12)
+   {
+      //zCow += 0.02;
+      //xCow += 0.02;
+      isWalking = 0;
+      xUFO += .05;
+      zUFO += .05;
+      if((timer-tempTimer) < 1)
+      {
+         drawLaser(40, 5, 40);
+         doors = 0;
+      }
+      if((timer-tempTimer) > 2 && (timer-tempTimer) < 2.5)
+      {
+         drawLaser(40, 5, 40);
+         doors = 0;
+      }
+      if((timer-tempTimer) > 2.75 && (timer-tempTimer) < 3)
+      {
+         drawLaser(40, 5, 40);
+         doors = 0;
+      }
+      if((timer-tempTimer) > 3.25 && (timer-tempTimer) < 3.5)
+      {
+         drawLaser(40, 5, 40);
+         doors = 0;
+      }
+      if((timer-tempTimer) > 3.75 && (timer-tempTimer) < 4)
+      {
+         drawLaser(40, 5, 40);
+         doors = 0;
+      }
+      if((timer-tempTimer) > 4.25 && (timer-tempTimer) < 4.5)
+      {
+         drawLaser(40, 5, 40);
+         doors = 0;
+      }
+      if((timer-tempTimer) > 5)
+      {
+         moviePhase2++;
+         tempTimer = timer;
+      }
+   }
+   else if(moviePhase2 == 13)
+   {
+      glTranslatef(0.0f, -20.0f, -20.0);
+      if(UFOAngle == 360)
+      {
+         UFOAngle = 0;
+      }
+      xUFO = -sin(UFOAngle) * 50; 
+      zUFO = -cos(UFOAngle) * 50;
+      yUFO += 0.1;
+      UFOAngle += .01;
+      
+      if((timer-tempTimer) > 5)
+      {
+         moviePhase2++;
+         tempTimer = timer;
+      }
+   }
+   else if(moviePhase2 == 14)
+   {
+      glRotatef(90,0.0,1.0,0.0);
+      glRotatef(-50,0.0,0.0,1.0);
+      glRotatef(-180,0.0,1.0,0.0);
+      glTranslatef(15.50f, -35.0f, -57);
+      
       if((timer-tempTimer) > 3)
+      {
+         moviePhase2++;
+         tempTimer = timer;
+      }
+   }
+   else if(moviePhase2 == 15)
+   {
+      xCow -= 0.02;
+      isWalking  = 1;
+      
+      if((timer-tempTimer) > 5)
+      {
+         moviePhase2++;
+         tempTimer = timer;
+      }
+   }
+   else if(moviePhase2 == 16)
+   {
+      xCow += 0.01;
+      zCow -= 0.03;
+      
+      if((timer-tempTimer) > 5)
+      {
+         moviePhase2++;
+         tempTimer = timer;
+      }
+   }
+   else if(moviePhase2 == 17)
+   {
+      xCow += 0.01;
+      
+      if((timer-tempTimer) > 6)
+      {
+         moviePhase2++;
+         tempTimer = timer;
+      }
+   }
+   else if(moviePhase2 == 18)
+   {
+      exit(0);
+      
+      if((timer-tempTimer) > 6)
       {
          //moviePhase2++;
          tempTimer = timer;
       }
    }
 
+
    printf("%f %d %d %f %f %f %f\n", yChicken, moviePhase1, moviePhase2, timer, tempTimer, yUFO, zUFO);
 
    drawEnvironment(texture);
    drawUFO();
    drawChicken(texture);
-   if(moviePhase2 < 6)
+   if(moviePhase2 >= 0)
    {
       drawCow(texture);
-   }
-   if(moviePhase2 >=  6)
-   {
-      //glTranslatef(xCow+-0.8f,yCow+ -1.0f,zCow+ -1.8f);
-      //glRotatef(-35,0.0,1.0,0.0);
-      //glTranslatef(-xCow+0.8f,-yCow+ 1.0f,-zCow+ 1.8f);
-      drawCow(texture);
-      //glTranslatef(xCow+-0.8f,yCow+ -1.0f,zCow+ -1.8f);
-      //glRotatef(35,0.0,1.0,0.0);
-      //glTranslatef(-xCow+0.8f,-yCow+ 1.0f,-zCow+ 1.8f);
    }
    if(egg == 1)
    {
@@ -2275,7 +2426,7 @@ void myDisplay()
 
    timer += 0.01;
 
-   //rayglFrameEnd();
+   rayglFrameEnd();
 
    angle5++;
 }
@@ -2293,7 +2444,7 @@ void myInit(void)
    setFadePower(1.4);
    glEnable (GL_DEPTH_TEST); //enable the depth testing
    glShadeModel (GL_SMOOTH); //set the shader to smooth shader
-   //lightc();
+   lightc();
 }
 
 void keyboard (unsigned char key, int x, int y)
